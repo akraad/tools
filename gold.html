@@ -49,7 +49,8 @@
             background-color: #F8F9FA;
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid #E0E0E0;
+            /* Match the specific border of this group to weight/wage inputs */
+            border: 1px solid #D1D5DB; /* Lighter border for consistency */
             margin-bottom: 20px;
         }
         .gold-price-in-words {
@@ -66,12 +67,13 @@
         .input-group select {
             width: calc(100% - 16px); /* Full width minus padding */
             padding: 8px; /* Consistent padding */
-            border: 1px solid #D1D5DB;
+            /* Match the specific border of weight/wage inputs to goldPrice and this group */
+            border: 1px solid #D1D5DB; /* Lighter border for consistency */
             border-radius: 6px;
             background-color: #FFFFFF;
             color: #333;
             font-size: 0.95em;
-            direction: ltr;
+            direction: ltr; /* Ensure LTR for numbers even with Persian font */
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
@@ -134,7 +136,8 @@
             padding: 10px;
             border-radius: 8px;
             background-color: #F8F9FA;
-            border: 1px solid #E0E0E0;
+            /* Border of items container should be the lighter one */
+            border: 1px solid #E0E0E0; 
             padding-top: 20px; /* Extra padding for the shifted plus button */
             position: relative; /* For absolute positioning of the plus button */
         }
@@ -180,7 +183,7 @@
         #add-item-global-button {
             position: absolute;
             top: -15px; /* Adjust to be above the box */
-            right: -15px; /* Adjust to be on the left outside the box */
+            left: -15px; /* Changed from right to left for top-left position */
             background-color: #3B82F6; /* Blue color */
             color: #FFFFFF;
             border: none;
@@ -201,32 +204,8 @@
             transform: scale(1.1);
         }
 
-        /* Styles for the remove button */
-        .remove-item-button {
-            background-color: #EF4444; /* Red for remove */
-            color: #FFFFFF;
-            border: none;
-            border-radius: 4px; /* Square/slightly rounded */
-            width: 32px; /* Size similar to + button */
-            height: 32px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            flex-shrink: 0;
-            line-height: 1;
-            margin-right: 5px; /* Space from wage input */
-            margin-top: 15px; /* Align with input fields vertically */
-        }
-        .remove-item-button:hover {
-            background-color: #DC2626;
-            transform: scale(1.05);
-        }
-
-        /* Hide the old "add item" containers */
-        .add-item-main-button-container, .item-row .add-button-container {
+        /* Hide the old "add item" containers and remove button */
+        .add-item-main-button-container, .item-row .add-button-container, .remove-item-button {
             display: none;
         }
 
@@ -423,66 +402,57 @@
             itemRowDiv.classList.add('item-row');
             itemRowDiv.id = `item-row-${itemCounter}`;
 
-            let removeButtonHtml = '';
-            // Only add remove button if it's not the very first item ever added (itemCounter > 1)
-            // And also, if there's currently more than 1 item visible (to allow removal of 2nd onwards)
-            if (document.querySelectorAll('.item-row').length >= 1) { // If there's at least one row already, new ones can be removed
-                removeButtonHtml = `<button type="button" class="remove-item-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>`;
-            }
-
-
             itemRowDiv.innerHTML = `
                 <div class="input-wrapper">
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
-                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0" oninput="formatNumberInputToPersian(this)">
                 </div>
                 <div class="input-wrapper">
                     <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
-                    <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100">
+                    <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100" oninput="formatNumberInputToPersian(this)">
                 </div>
-                ${removeButtonHtml}
             `;
             itemsContainer.appendChild(itemRowDiv);
 
-            // If it's the first row being added (itemCounter is 1), ensure its label is correct
-            if (itemCounter === 1) {
-                document.querySelector(`#goldWeight-1`).parentNode.querySelector('label').textContent = 'وزن (1):';
-                document.querySelector(`#wage-1`).parentNode.querySelector('label').textContent = 'اجرت (1):';
-            }
+            // Re-label all items correctly after adding a new one
+            updateItemRowLabels();
         }
 
-        // Remove an item row
-        function removeItemRow(id) {
-            const itemToRemove = document.getElementById(id);
-            if (itemToRemove) {
-                itemToRemove.remove();
-                itemCounter--; // Decrement counter after removal
+        // Removed removeItemRow function entirely as requested.
+        // If a "remove" functionality is needed in the future, it would need to be re-added.
 
-                // Re-label remaining items correctly
-                document.querySelectorAll('.item-row').forEach((row, index) => {
-                    const currentNum = index + 1;
-                    row.id = `item-row-${currentNum}`; // Update ID
-                    row.querySelector('.gold-weight-input').id = `goldWeight-${currentNum}`;
-                    row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${currentNum}):`;
-                    row.querySelector('.wage-input').id = `wage-${currentNum}`;
-                    row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${currentNum}):`;
-
-                    // Update remove button onclick
-                    const removeBtn = row.querySelector('.remove-item-button');
-                    if (removeBtn) {
-                        removeBtn.setAttribute('onclick', `removeItemRow('item-row-${currentNum}')`);
-                    }
-                });
-
-                // If only one row remains, remove its remove button
-                if (document.querySelectorAll('.item-row').length === 1) {
-                    const lastRemoveButton = document.querySelector('.remove-item-button');
-                    if (lastRemoveButton) {
-                        lastRemoveButton.remove();
-                    }
+        // Function to format number inputs (weight, wage) to Persian digits
+        function formatNumberInputToPersian(inputElement) {
+            // Get the value, convert any Persian digits to Latin, then remove non-numeric chars (except decimal point for weight)
+            let latinValue = toLatinDigits(inputElement.value);
+            
+            // For weight, allow decimal point. For wage, only integers.
+            if (inputElement.id.includes('goldWeight')) {
+                latinValue = latinValue.replace(/[^0-9.]/g, '');
+                // Ensure only one decimal point
+                const parts = latinValue.split('.');
+                if (parts.length > 2) {
+                    latinValue = parts[0] + '.' + parts.slice(1).join('');
                 }
+            } else { // For wage
+                latinValue = latinValue.replace(/[^0-9]/g, '');
             }
+
+            inputElement.value = toPersianDigits(latinValue);
         }
+
+        // Update item row labels (e.g., "وزن (1):", "وزن (2):")
+        function updateItemRowLabels() {
+            document.querySelectorAll('.item-row').forEach((row, index) => {
+                const currentNum = index + 1;
+                row.id = `item-row-${currentNum}`; // Update ID
+                row.querySelector('.gold-weight-input').id = `goldWeight-${currentNum}`;
+                row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${currentNum}):`;
+                row.querySelector('.wage-input').id = `wage-${currentNum}`;
+                row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${currentNum}):`;
+            });
+        }
+
 
         // Formats gold price input: accepts only 7 digits, adds Persian commas
         function formatGoldPrice(inputValue) {
@@ -510,7 +480,7 @@
         // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
             addItemRow(); // Add the first item row on load
-            updateGoldPriceInWords(); // Initial display
+            updateGoldPriceInWords(); // Initial display for gold price
         });
 
 
@@ -538,8 +508,8 @@
             let hasInvalidInput = false;
 
             goldWeightInputs.forEach((weightInput, index) => {
-                const goldWeight = parseFloat(weightInput.value);
-                const wagePercentage = parseFloat(wageInputs[index].value) || 0;
+                const goldWeight = parseFloat(toLatinDigits(weightInput.value)); // Convert to Latin for calculation
+                const wagePercentage = parseFloat(toLatinDigits(wageInputs[index].value)) || 0; // Convert to Latin for calculation
 
                 if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wagePercentage) || wagePercentage < 0) {
                     hasInvalidInput = true;
