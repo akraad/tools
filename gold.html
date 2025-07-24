@@ -203,7 +203,7 @@
             transform: scale(1.1);
         }
 
-        /* Hide the main add button as it's replaced by per-row button */
+        /* Hide the main add item button as it's replaced by per-row button */
         .add-item-main-button-container {
             display: none;
         }
@@ -287,11 +287,12 @@
         <div class="input-group gold-price-input-group">
             <label for="goldPrice">مبلغ قیمت هر گرم طلا:</label>
             <div id="goldPriceInWords" class="gold-price-in-words">صفر تومان</div>
-            <input type="text" id="goldPrice" min="0" inputmode="numeric" oninput="formatGoldPrice(this)">
+            <input type="text" id="goldPrice" inputmode="numeric" oninput="formatGoldPrice(this.value)">
         </div>
 
         <div id="items-container">
             </div>
+
         <div class="input-group">
             <label for="sellerProfit">سود فروشنده (درصد):</label>
             <select id="sellerProfit">
@@ -321,7 +322,27 @@
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
 
-        // Number to Persian Word Conversion
+        // Map Latin digits to Persian digits for display
+        const latinToPersianDigits = {
+            '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴',
+            '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'
+        };
+        const persianToLatinDigits = {
+            '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+            '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
+        };
+
+        // Function to convert Latin numbers to Persian
+        function toPersianDigits(str) {
+            return str.replace(/[0-9]/g, char => latinToPersianDigits[char]);
+        }
+
+        // Function to convert Persian numbers to Latin
+        function toLatinDigits(str) {
+            return str.replace(/[۰-۹]/g, char => persianToLatinDigits[char]);
+        }
+
+        // Number to Persian Word Conversion (remains the same as it operates on Latin numbers internally)
         const numToWord = {
             0: "صفر", 1: "یک", 2: "دو", 3: "سه", 4: "چهار", 5: "پنج", 6: "شش", 7: "هفت", 8: "هشت", 9: "نه",
             10: "ده", 11: "یازده", 12: "دوازده", 13: "سیزده", 14: "چهارده", 15: "پانزده", 16: "شانزده", 17: "هفده", 18: "هجده", 19: "نوزده",
@@ -383,6 +404,11 @@
             itemRowDiv.classList.add('item-row');
             itemRowDiv.id = `item-row-${itemCounter}`;
 
+            let removeButtonHtml = '';
+            if (itemCounter > 1) { // Only add remove button if it's not the first row
+                removeButtonHtml = `<button type="button" class="add-button remove-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>`;
+            }
+
             itemRowDiv.innerHTML = `
                 <div class="input-wrapper">
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
@@ -393,19 +419,27 @@
                     <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100">
                 </div>
                 <div class="add-button-container">
+                    ${removeButtonHtml}
                     <button type="button" class="add-button" onclick="addItemRow()">+</button>
                 </div>
             `;
             itemsContainer.appendChild(itemRowDiv);
 
-            // Hide the plus button on previous rows if there is more than one row
+            // Hide the plus button on previous rows, if they exist
             const allAddButtons = document.querySelectorAll('.add-button');
             if (allAddButtons.length > 1) {
+                // Ensure only the very last plus button is visible
                 allAddButtons.forEach((button, index) => {
-                    if (index < allAddButtons.length - 1) { // Hide all except the last one
+                    if (index < allAddButtons.length - 1 && button.textContent.trim() === '+') { // Check for '+' button
                         button.style.display = 'none';
                     }
                 });
+            }
+            
+            // Adjust label text and width for first row after adding a second one
+            if (itemCounter === 2) {
+                document.querySelector('#goldWeight-1').parentNode.querySelector('label').textContent = 'وزن (1):';
+                document.querySelector('#wage-1').parentNode.querySelector('label').textContent = 'اجرت (1):';
             }
         }
 
@@ -414,39 +448,44 @@
             const itemToRemove = document.getElementById(id);
             if (itemToRemove) {
                 itemToRemove.remove();
-            }
-            
-            // Re-show the plus button on the last remaining row if any
-            const allRows = document.querySelectorAll('.item-row');
-            if (allRows.length > 0) {
-                const lastRow = allRows[allRows.length - 1];
-                const lastRowAddButton = lastRow.querySelector('.add-button');
-                if (lastRowAddButton) {
-                    lastRowAddButton.style.display = 'flex'; // Ensure it's visible
+                itemCounter--; // Decrement counter after removal
+
+                // Re-show the plus button on the *new* last row if one exists
+                const allRows = document.querySelectorAll('.item-row');
+                if (allRows.length > 0) {
+                    const lastRow = allRows[allRows.length - 1];
+                    const lastRowAddButton = lastRow.querySelector('.add-button');
+                    if (lastRowAddButton) {
+                        lastRowAddButton.style.display = 'flex'; // Make sure the last '+' button is visible
+                    }
                 }
             }
         }
 
         // Formats gold price input: accepts only 7 digits, adds Persian commas
-        function formatGoldPrice(input) {
-            let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        function formatGoldPrice(inputValue) {
+            // First, convert any Persian digits to Latin for internal processing
+            let latinValue = toLatinDigits(inputValue);
+            // Remove all non-numeric characters
+            latinValue = latinValue.replace(/[^0-9]/g, '');
 
-            if (value.length > 7) {
-                value = value.substring(0, 7); // Truncate to 7 digits
+            if (latinValue.length > 7) {
+                latinValue = latinValue.substring(0, 7); // Truncate to 7 digits
             }
             
-            // Format with standard commas first
-            let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            // Format with standard commas
+            let formattedValue = latinValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             
-            // Replace Latin digits with Persian ones in the formatted string
-            input.value = formattedValue.replace(/0/g, '۰').replace(/1/g, '۱').replace(/2/g, '۲').replace(/3/g, '۳').replace(/4/g, '۴').replace(/5/g, '۵').replace(/6/g, '۶').replace(/7/g, '۷').replace(/8/g, '۸').replace(/9/g, '۹');
+            // Convert back to Persian digits for display
+            goldPriceInput.value = toPersianDigits(formattedValue);
             
             updateGoldPriceInWords();
         }
 
         // Update Persian words display for gold price
         function updateGoldPriceInWords() {
-            const rawValue = goldPriceInput.value.replace(/[^0-9]/g, ''); // Get numeric value without commas/Persian digits
+            // Get the current value from the input, convert to Latin, then remove commas for parsing
+            const rawValue = toLatinDigits(goldPriceInput.value).replace(/,/g, ''); 
             const numValue = parseInt(rawValue, 10) || 0;
             goldPriceInWordsDisplay.textContent = `${convertNumberToWords(numValue)} تومان`;
         }
@@ -459,8 +498,8 @@
 
 
         function calculateGoldPrice() {
-            // Get raw numeric value from input, removing all non-numeric characters
-            const goldPricePerGram = parseFloat(goldPriceInput.value.replace(/[^0-9]/g, ''));
+            // Get raw numeric value from input, converting Persian digits to Latin and removing commas
+            const goldPricePerGram = parseFloat(toLatinDigits(goldPriceInput.value).replace(/,/g, ''));
             const enableTax = document.getElementById('enableTax').checked;
             const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
@@ -522,7 +561,7 @@
             if (isNaN(num) || num === null) return '۰';
             let formatted = num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             // Replace Latin digits with Persian ones
-            return formatted.replace(/0/g, '۰').replace(/1/g, '۱').replace(/2/g, '۲').replace(/3/g, '۳').replace(/4/g, '۴').replace(/5/g, '۵').replace(/6/g, '۶').replace(/7/g, '۷').replace(/8/g, '۸').replace(/9/g, '۹');
+            return toPersianDigits(formatted);
         }
     </script>
 
