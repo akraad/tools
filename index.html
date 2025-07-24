@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ابزارک های کاربردی</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #2c3e50; /* Dark Blue-Gray */
+            color: #ecf0f1; /* Light Gray for text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Header Styling */
+        .header-container {
+            background-color: #34495e; /* Slightly lighter dark blue-gray */
+            border: 2px solid #f39c12; /* Yellow border for classic look */
+            padding: 15px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-radius: 8px; /* Slightly rounded corners */
+        }
+
+        .header-text {
+            font-family: 'B Nazanin', 'Iranian Sans', sans-serif; /* Example Persian fonts, ensure they are available or link Google Fonts */
+            font-size: 2.8em;
+            color: #e74c3c; /* Red */
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* Options List Styling */
+        .options-list {
+            list-style: none; /* Remove default bullet points */
+            padding: 0;
+            width: 100%;
+            max-width: 600px; /* Limit width for readability */
+            margin-bottom: 50px;
+        }
+
+        .options-list li {
+            background-color: #34495e; /* Same as header background */
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, background-color 0.2s;
+            display: flex;
+            align-items: center;
+            border-left: 5px solid #3498db; /* Blue accent */
+        }
+
+        .options-list li:hover {
+            transform: translateY(-3px);
+            background-color: #3f5870; /* Slightly lighter on hover */
+        }
+
+        .options-list li strong {
+            color: #f39c12; /* Yellow for numbers */
+            font-size: 1.3em;
+            margin-left: 15px; /* Space between number and text */
+        }
+
+        .options-list li span {
+            color: #ecf0f1; /* Light gray for option text */
+            font-size: 1.1em;
+        }
+
+        /* Footer Styling */
+        .footer {
+            margin-top: auto; /* Pushes footer to the bottom */
+            font-size: 0.9em;
+            color: #95a5a6; /* Muted gray for copyright */
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1 class="header-text">ابزارک های کاربردی</h1>
+    </div>
+
+    <ul class="options-list">
+        <li><strong>1.</strong> <span>گزینه اول</span></li>
+        <li><strong>2.</strong> <span>گزینه دوم</span></li>
+        <li><strong>3.</strong> <span>گزینه سوم</span></li>
+        <li><strong>4.</strong> <span>گزینه چهارم</span></li>
+        <li><strong>5.</strong> <span>گزینه پنجم</span></li>
+        <li><strong>6.</strong> <span>گزینه ششم</span></li>
+        <li><strong>7.</strong> <span>گزینه هفتم</span></li>
+        <li><strong>8.</strong> <span>گزینه هشتم</span></li>
+        <li><strong>9.</strong> <span>گزینه نهم</span></li>
+        <li><strong>10.</strong> <span>گزینه دهم</span></li>
+    </ul>
+
+    <div class="footer">
+        <p>&#169; <span id="current-year"></span> All rights reserved. Please respect copyright.</p>
+    </div>
+
+    <script>
+        // JavaScript to dynamically set the current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
