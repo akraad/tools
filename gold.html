@@ -26,7 +26,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 350px;
+            max-width: 350px; /* Kept max-width for overall form size */
             margin-top: 30px;
             position: relative;
             border: 1px solid #E5E7EB;
@@ -49,7 +49,7 @@
             background-color: #F8F9FA;
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid #D1D5DB; /* Lighter border for consistency */
+            border: 1px solid #D1D5DB;
             margin-bottom: 20px;
         }
         .gold-price-in-words {
@@ -63,26 +63,22 @@
         /* Unified Input/Select Styling for consistent height and appearance */
         .input-group input[type="text"],
         .input-group input[type="number"],
-        .input-group select,
-        .item-row .input-wrapper input, /* Apply to weight and wage inputs */
-        .item-row .wage-type-select /* Apply to new wage type select */
-        {
-            width: calc(100% - 16px); /* Full width minus padding */
-            padding: 8px; /* Consistent padding */
-            border: 1px solid #D1D5DB; /* Lighter border for consistency */
+        .input-group select {
+            width: calc(100% - 16px);
+            padding: 8px;
+            border: 1px solid #D1D5DB;
             border-radius: 6px;
             background-color: #FFFFFF;
             color: #333;
             font-size: 0.95em;
-            direction: ltr; /* Ensure LTR for numbers even with Persian font */
+            direction: ltr;
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
-            font-family: 'Vazirmatn', sans-serif !important; /* Set font here for all unified inputs */
-            height: 38px; /* Fixed height for consistency */
-            box-sizing: border-box; /* Include padding and border in height */
+            font-family: 'Vazirmatn', sans-serif !important;
+            height: 38px;
+            box-sizing: border-box;
         }
-        /* Make sellerProfit select box same size and styling as other inputs */
         #sellerProfit {
             width: calc(100% - 16px);
         }
@@ -101,10 +97,7 @@
 
         .input-group input[type="text"]:focus,
         .input-group input[type="number"]:focus,
-        .input-group select:focus,
-        .item-row .input-wrapper input:focus,
-        .item-row .wage-type-select:focus
-        {
+        .input-group select:focus {
             outline: none;
             border-color: #6366F1;
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
@@ -134,20 +127,20 @@
             border-radius: 3px;
         }
 
-        /* Styling for the items container */
         #items-container {
             margin-bottom: 15px;
             padding: 10px;
             border-radius: 8px;
             background-color: #F8F9FA;
             border: 1px solid #E0E0E0; 
-            padding-top: 20px; /* Extra padding for the shifted plus button */
-            position: relative; /* For absolute positioning of the plus button */
+            padding-top: 20px;
+            position: relative;
         }
 
         .item-row {
             display: flex;
-            align-items: flex-start; /* Align inputs to top to respect label position */
+            flex-wrap: wrap; /* Allow items to wrap to next line on smaller screens */
+            align-items: flex-start;
             margin-bottom: 10px;
             justify-content: space-between;
         }
@@ -159,42 +152,46 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 0;
-            flex-grow: 1;
-            flex-basis: 48%; /* Adjusted for better symmetry with more elements */
+            flex: 1 1 48%; /* Flex-grow, flex-shrink, flex-basis: Distributes space, allows shrinking */
+            min-width: 120px; /* Minimum width for inputs before wrapping */
         }
-        .item-row .input-wrapper:first-child { /* Weight input wrapper */
-            margin-left: 0; /* No margin-right to align with container */
+        .item-row .input-wrapper:first-child {
+            margin-left: 0;
         }
-        /* For wage input, adjust width to accommodate the select next to it */
+        .item-row .input-wrapper:nth-child(2) { /* Wage input wrapper */
+            margin-right: 5px; /* Space between weight and wage group */
+        }
+
+        /* Specific styles for wage input to accommodate select */
         .item-row .wage-input-wrapper {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-            flex-basis: 48%; /* Same as weight input for overall alignment */
-            margin-right: 5px; /* Space between weight and wage group */
+            flex: 1 1 48%; /* Flex properties for wage wrapper */
+            min-width: 120px;
         }
         .item-row .wage-input-and-type {
             display: flex;
-            align-items: center; /* Align input and select vertically */
-            width: 100%;
+            align-items: center;
+            width: 100%; /* Ensure this flex container takes full width of its parent */
         }
         .item-row .wage-input-and-type input {
             flex-grow: 1;
-            width: auto; /* Let flexbox control width */
+            width: auto;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            padding-right: 4px; /* Adjust padding for better look next to select */
+            padding-right: 4px;
+            text-align: right; /* Ensure text alignment for input inside flex */
         }
         .item-row .wage-type-select {
             width: 60px; /* Fixed width for the select */
             flex-shrink: 0;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            border-right: none; /* Remove right border to merge with input */
-            text-align-last: center; /* Center text in select */
-            padding-left: 2px; /* Adjust padding */
+            border-right: none;
+            text-align-last: center;
+            padding-left: 2px;
+            direction: ltr; /* Ensure LTR for the % / تومان options */
         }
-
 
         .item-row .input-wrapper label,
         .item-row .wage-input-wrapper label {
@@ -202,19 +199,24 @@
             font-size: 0.8em;
             white-space: nowrap;
             flex-shrink: 0;
-            width: 100%; /* Ensure label takes full width */
+            width: 100%;
+        }
+        
+        /* Adjusted width for inputs within item-row to fit the new flex context */
+        .item-row .input-wrapper input {
+            width: calc(100% - 16px); /* Re-calculate based on direct parent */
         }
 
-        /* New positioning for the add button outside the box, top-left */
+
         #add-item-global-button {
             position: absolute;
-            top: -15px; /* Adjust to be above the box */
-            left: -15px; /* Changed from right to left for top-left position */
-            background-color: #3B82F6; /* Blue color */
+            top: -15px;
+            left: -15px;
+            background-color: #3B82F6;
             color: #FFFFFF;
             border: none;
-            border-radius: 50%; /* Round button */
-            width: 32px; /* Larger size for prominence */
+            border-radius: 50%;
+            width: 32px;
             height: 32px;
             font-size: 24px;
             display: flex;
@@ -223,14 +225,13 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-            z-index: 10; /* Ensure it's above other elements */
+            z-index: 10;
         }
         #add-item-global-button:hover {
             background-color: #2563EB;
             transform: scale(1.1);
         }
 
-        /* Hide any remnants of old add/remove buttons */
         .add-item-main-button-container, .item-row .add-button-container, .remove-item-button {
             display: none;
         }
@@ -300,6 +301,18 @@
             color: #777;
             font-size: 0.75em;
             margin-left: 3px;
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 320px) { /* Adjust for very small screens, e.g., iPhone SE */
+            .item-row .input-wrapper,
+            .item-row .wage-input-wrapper {
+                flex-basis: 100%; /* Stack inputs vertically */
+                margin-right: 0; /* Remove horizontal margin */
+            }
+            .item-row .input-wrapper:first-child {
+                margin-bottom: 10px; /* Add some space between stacked inputs */
+            }
         }
     </style>
 </head>
@@ -450,13 +463,14 @@
         function formatNumberInputToPersian(inputElement) {
             let latinValue = toLatinDigits(inputElement.value);
             
+            // Allow only digits and one decimal point for goldWeight
             if (inputElement.id.includes('goldWeight')) {
                 latinValue = latinValue.replace(/[^0-9.]/g, '');
                 const parts = latinValue.split('.');
                 if (parts.length > 2) {
                     latinValue = parts[0] + '.' + parts.slice(1).join('');
                 }
-            } else { // For wage
+            } else { // For wage, allow only digits
                 latinValue = latinValue.replace(/[^0-9]/g, '');
             }
 
@@ -564,7 +578,6 @@
 
             const totalFinalPrice = totalRawGoldPrice + totalCalculatedWage + totalCalculatedSellerProfit + totalCalculatedTaxAmount;
 
-            // Removed calculatedWageDisplay as requested
             document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(totalCalculatedSellerProfit);
             document.getElementById('calculatedTax').textContent = formatCurrency(totalCalculatedTaxAmount);
             document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
