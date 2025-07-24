@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه‌گر قیمت طلا</title>
+    <title>محاسبه‌گر پیشرفته طلا</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -25,85 +25,96 @@
         .header-container {
             width: 100%;
             text-align: center;
-            padding: 25px 0; /* More padding for header */
-            background-color: #EFEFEF; /* Light gray for header background */
-            border-bottom: 1px solid #E0E0E0; /* Subtle light border */
+            padding: 25px 0;
+            background-color: #EFEFEF;
+            border-bottom: 1px solid #E0E0E0;
             margin-bottom: 40px;
             position: relative;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .header-text {
-            font-size: 2em; /* Slightly larger title for impact */
-            color: #4263EB; /* A modern blue accent */
+            font-size: 2em;
+            color: #4263EB;
             margin: 0;
-            font-weight: 700; /* Bold title */
+            font-weight: 700;
         }
 
         /* Back Icon Button */
         .back-icon {
             position: absolute;
             top: 25px;
-            left: 25px; /* Position to the left */
-            font-size: 24px; /* Icon size */
-            color: #6C757D; /* Muted gray for the icon */
+            left: 25px;
+            font-size: 24px;
+            color: #6C757D;
             text-decoration: none;
             transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
             cursor: pointer;
-            display: flex; /* To center icon if needed */
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px; /* Make it a clickable area */
+            width: 40px;
             height: 40px;
-            border-radius: 50%; /* Make it circular */
+            border-radius: 50%;
         }
 
         .back-icon:hover {
-            color: #333; /* Darker on hover */
-            transform: scale(1.1); /* Slightly enlarge on hover */
-            background-color: rgba(0, 0, 0, 0.05); /* Subtle background on hover */
+            color: #333;
+            transform: scale(1.1);
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         /* Calculator Container - Modern Minimal */
         .calculator-container {
-            background-color: #FFFFFF; /* Pure white background for the card */
-            padding: 30px; /* Slightly reduced padding */
-            border-radius: 12px; /* More rounded corners */
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Pronounced but soft shadow */
+            background-color: #FFFFFF;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 450px; /* Slightly narrower for more minimalism */
+            max-width: 480px; /* Increased max-width slightly for better multi-item display */
             margin-bottom: 60px;
-            border: 1px solid #E0E0E0; /* Subtle border for definition */
+            border: 1px solid #E0E0E0;
         }
 
         .input-group {
-            margin-bottom: 20px; /* Reduced space between input groups */
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
         }
 
         .input-group label {
-            margin-bottom: 8px; /* Reduced space between label and input */
-            font-size: 0.95em; /* Slightly smaller label font */
-            color: #555; /* Slightly darker label color */
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: #555;
             display: block;
             font-weight: 500;
         }
 
+        /* Distinct Gold Price Input */
+        .gold-price-input-group {
+            background-color: #E8F0FE; /* Light blue background to distinguish */
+            padding: 15px; /* More padding */
+            border-radius: 8px;
+            border: 1px solid #C0D8F8; /* Light blue border */
+            margin-bottom: 25px; /* More space below it */
+        }
+
+        /* Styling for all number inputs and selects */
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 20px); /* Adjust for padding and border */
-            padding: 10px; /* Reduced padding for smaller inputs */
-            border: 1px solid #D0D0D0; /* Light border */
-            border-radius: 6px; /* Slightly less rounded input corners */
-            background-color: #FDFDFD; /* Off-white for input background */
-            color: #333; /* Dark text for input values */
-            font-size: 1em; /* Reduced input font size */
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #D0D0D0;
+            border-radius: 6px;
+            background-color: #FDFDFD;
+            color: #333;
+            font-size: 1em;
             direction: ltr;
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
         }
+
         /* Hide arrows for Chrome, Safari, Edge */
         .input-group input[type="number"]::-webkit-outer-spin-button,
         .input-group input[type="number"]::-webkit-inner-spin-button {
@@ -113,96 +124,173 @@
 
         /* Placeholder specific styling */
         .input-group input::placeholder {
-            font-family: 'Vazirmatn', sans-serif; /* Use Vazirmatn for placeholders */
-            color: #A0A0A0; /* Lighter color for placeholders */
-            font-weight: 400; /* Normal weight for placeholders */
+            font-family: 'Vazirmatn', sans-serif;
+            color: #A0A0A0;
+            font-weight: 400;
         }
 
         .input-group input[type="number"]:focus,
         .input-group select:focus {
             outline: none;
-            border-color: #4263EB; /* Modern blue on focus */
-            box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.2); /* Soft glow on focus */
+            border-color: #4263EB;
+            box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.2);
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 20px; /* Reduced margin */
+            margin-bottom: 20px;
             justify-content: flex-end;
         }
 
         .checkbox-group label {
-            margin-right: 10px; /* Reduced space for checkbox label */
-            font-size: 0.95em; /* Match label font size */
+            margin-right: 10px;
+            font-size: 0.95em;
             cursor: pointer;
             color: #555;
             font-weight: 500;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: 18px; /* Slightly smaller checkbox */
+            width: 18px;
             height: 18px;
-            accent-color: #00BFA5; /* Teal for checked state */
+            accent-color: #00BFA5;
             cursor: pointer;
-            border: 1px solid #CCC; /* Lighter border for checkbox */
-            border-radius: 3px; /* Slightly less rounded checkbox */
+            border: 1px solid #CCC;
+            border-radius: 3px;
         }
 
-        button {
-            width: 100%;
-            padding: 14px 20px; /* Slightly reduced button padding */
-            background-color: #4CAF50; /* Green for action */
-            color: #FFFFFF; /* White text on button */
+        /* Dynamic Weight Fields Container */
+        #weights-container {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #E0E0E0; /* Separator for weight fields */
+        }
+
+        .weight-item {
+            display: flex;
+            align-items: flex-end; /* Align items to the bottom */
+            margin-bottom: 15px;
+        }
+
+        .weight-item:last-child {
+            margin-bottom: 0; /* No margin for the last item */
+        }
+
+        .weight-item .input-group {
+            flex-grow: 1; /* Allow input group to take available space */
+            margin-bottom: 0; /* Remove default margin */
+            margin-right: 10px; /* Space between input and button */
+        }
+
+        .add-weight-button {
+            background-color: #00BFA5; /* Teal for add button */
+            color: #FFFFFF;
             border: none;
-            border-radius: 6px; /* Slightly less rounded button */
-            font-size: 1.1em; /* Reduced button font size */
+            border-radius: 50%; /* Circular button */
+            width: 36px; /* Size of the button */
+            height: 36px;
+            font-size: 24px; /* Plus sign size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .add-weight-button:hover {
+            background-color: #009688;
+            transform: scale(1.05);
+        }
+
+        .remove-weight-button {
+            background-color: #E74C3C; /* Red for remove button */
+            color: #FFFFFF;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 20px; /* Minus sign size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-left: 8px; /* Space between input and remove button */
+            flex-shrink: 0;
+        }
+
+        .remove-weight-button:hover {
+            background-color: #C0392B;
+            transform: scale(1.05);
+        }
+
+
+        button.calculate-button { /* Renamed for clarity */
+            width: 100%;
+            padding: 14px 20px;
+            background-color: #4CAF50;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2); /* Soft shadow for button */
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
         }
 
-        button:hover {
-            background-color: #43A047; /* Darker green on hover */
+        button.calculate-button:hover {
+            background-color: #43A047;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
         }
 
         .result-section {
-            margin-top: 30px; /* Reduced space above results */
+            margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px dashed #E0E0E0; /* Lighter dashed separator */
+            border-top: 1px dashed #E0E0E0;
             text-align: center;
-            line-height: 1.7; /* Slightly reduced line height */
+            line-height: 1.7;
+        }
+
+        .result-section h3 {
+            font-size: 1.2em;
+            color: #4263EB;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .result-section p {
-            font-size: 0.95em; /* Slightly smaller result text */
-            margin-bottom: 4px; /* Smaller margin for compact results */
+            font-size: 0.95em;
+            margin-bottom: 4px;
             color: #555;
             display: flex;
-            justify-content: space-between; /* Space out label and value */
+            justify-content: space-between;
             align-items: baseline;
-            padding: 0 8px; /* Reduced padding for result lines */
+            padding: 0 8px;
+        }
+        .result-section p.total-result {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333; /* Darker for final total */
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #EEE;
         }
 
         .result-section strong {
-            color: #4263EB; /* Modern blue accent for values */
-            font-size: 1.15em; /* Slightly smaller value font */
+            color: #4263EB;
+            font-size: 1.15em;
             font-weight: 700;
-            margin-right: 5px; /* Space before "تومان" */
+            margin-right: 5px;
         }
 
         .result-section span.currency {
-            color: #666; /* Slightly muted color for "تومان" */
-            font-size: 0.85em; /* Smaller currency text */
-            margin-left: 5px; /* Space after value */
-        }
-
-        /* Footer Styling */
-        .footer {
-            /* This section will be removed */
+            color: #666;
+            font-size: 0.85em;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -212,23 +300,26 @@
         <a href="index.html" class="back-icon" title="بازگشت به صفحه اصلی">
             <i class="material-icons">arrow_back</i>
         </a>
-        <h1 class="header-text">محاسبه‌گر قیمت طلا</h1>
+        <h1 class="header-text">محاسبه‌گر پیشرفته طلا</h1>
     </div>
 
     <div class="calculator-container">
-        <div class="input-group">
-            <label for="goldPrice">قیمت هر گرم طلا:</label>
-            <input type="number" id="goldPrice" placeholder="3,500,000" min="0">
+        <div class="checkbox-group">
+            <label for="enableTax">محاسبه مالیات ۱۰%</label>
+            <input type="checkbox" id="enableTax" checked>
         </div>
 
-        <div class="input-group">
-            <label for="goldWeight">وزن طلا (گرم):</label>
-            <input type="number" id="goldWeight" placeholder="5.25" step="0.01" min="0">
+        <div class="input-group gold-price-input-group">
+            <label for="goldPrice">قیمت هر گرم طلا (تومان):</label>
+            <input type="number" id="goldPrice" placeholder="مثال: 3,500,000" min="0">
         </div>
 
-        <div class="input-group">
+        <div id="weights-container">
+            </div>
+        <button type="button" class="add-weight-button" onclick="addWeightInput()">+</button>
+        <hr style="border: 0; border-top: 1px dashed #E0E0E0; margin: 25px 0;"> <div class="input-group">
             <label for="wage">اجرت (درصد):</label>
-            <input type="number" id="wage" placeholder="15" min="0" max="100">
+            <input type="number" id="wage" placeholder="مثال: 15" min="0" max="100">
         </div>
 
         <div class="input-group">
@@ -244,67 +335,114 @@
             </select>
         </div>
 
-        <div class="checkbox-group">
-            <label for="enableTax">محاسبه مالیات ۱۰%</label>
-            <input type="checkbox" id="enableTax" checked>
-        </div>
 
-        <button onclick="calculateGoldPrice()">محاسبه قیمت نهایی</button>
+        <button type="button" class="calculate-button" onclick="calculateGoldPrice()">محاسبه قیمت نهایی</button>
 
         <div class="result-section">
-            <p><span>قیمت طلا خام:</span> <strong><span id="rawGoldPrice">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>اجرت:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>سود فروشنده:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>مالیات محاسبه شده:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
+            <h3>نتایج محاسبه:</h3>
+            <p><span>قیمت طلا خام کل:</span> <strong><span id="totalRawGoldPrice">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>اجرت کل:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>سود فروشنده کل:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>مالیات محاسبه شده کل:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
+            <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
         </div>
     </div>
 
     <script>
-        // No need for current year as footer is removed
+        let weightInputCounter = 0; // To keep track of unique IDs for weight inputs
+
+        // Function to add a new weight input field
+        function addWeightInput() {
+            weightInputCounter++;
+            const weightsContainer = document.getElementById('weights-container');
+            const weightItemDiv = document.createElement('div');
+            weightItemDiv.classList.add('weight-item');
+            weightItemDiv.id = `weight-item-${weightInputCounter}`;
+
+            weightItemDiv.innerHTML = `
+                <div class="input-group">
+                    <label for="goldWeight-${weightInputCounter}">وزن طلا (${weightInputCounter}):</label>
+                    <input type="number" id="goldWeight-${weightInputCounter}" class="gold-weight-input" placeholder="مثال: 5.25" step="0.01" min="0">
+                </div>
+                <button type="button" class="remove-weight-button" onclick="removeWeightInput('weight-item-${weightInputCounter}')">−</button>
+            `;
+            weightsContainer.appendChild(weightItemDiv);
+        }
+
+        // Function to remove a weight input field
+        function removeWeightInput(id) {
+            const itemToRemove = document.getElementById(id);
+            if (itemToRemove) {
+                itemToRemove.remove();
+            }
+        }
+
+        // Add the initial weight input field when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            addWeightInput();
+        });
+
 
         function calculateGoldPrice() {
             const goldPricePerGram = parseFloat(document.getElementById('goldPrice').value);
-            const goldWeight = parseFloat(document.getElementById('goldWeight').value);
-            const wagePercentage = parseFloat(document.getElementById('wage').value) || 0; // Optional, defaults to 0
-            const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
             const enableTax = document.getElementById('enableTax').checked;
+            const wagePercentage = parseFloat(document.getElementById('wage').value) || 0;
+            const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
-            // Input validation
-            if (isNaN(goldPricePerGram) || isNaN(goldWeight) || goldPricePerGram <= 0 || goldWeight <= 0) {
-                alert('لطفاً قیمت هر گرم و وزن طلا را به درستی وارد کنید.');
+            // Input validation for gold price
+            if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
+                alert('لطفاً قیمت هر گرم طلا را به درستی وارد کنید.');
                 return;
             }
 
-            // 1. قیمت طلا خام: وزن طلا × قیمت طلا
-            const rawGoldPrice = goldWeight * goldPricePerGram;
+            // Get all weight input fields
+            const weightInputs = document.querySelectorAll('.gold-weight-input');
+            let totalRawGoldPrice = 0;
+            let totalCalculatedWage = 0;
+            let totalCalculatedSellerProfit = 0;
 
-            // 2. محاسبه اجرت (درصد از قیمت طلا خام)
-            const calculatedWage = (rawGoldPrice * wagePercentage) / 100;
-
-            // 3. محاسبه سود فروشنده (درصد از قیمت طلا خام)
-            const calculatedSellerProfit = (rawGoldPrice * sellerProfitPercentage) / 100;
-
-            let calculatedTaxAmount = 0;
-            if (enableTax) {
-                // مالیات: (اجرت + سود فروشنده) × ۱۰ درصد
-                calculatedTaxAmount = (calculatedWage + calculatedSellerProfit) * 0.10;
+            if (weightInputs.length === 0) {
+                 alert('لطفاً حداقل یک وزن طلا را وارد کنید.');
+                 return;
             }
 
-            // قیمت نهایی: قیمت طلا خام + اجرت + سود فروشنده + مالیات
-            const totalFinalPrice = rawGoldPrice + calculatedWage + calculatedSellerProfit + calculatedTaxAmount;
+            weightInputs.forEach(input => {
+                const goldWeight = parseFloat(input.value);
 
+                if (isNaN(goldWeight) || goldWeight <= 0) {
+                    alert('لطفاً همه وزن‌های طلا را به درستی وارد کنید.');
+                    return; // Stop calculation if any weight is invalid
+                }
+
+                const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
+                const calculatedWageForThisItem = (rawGoldPriceForThisItem * wagePercentage) / 100;
+                const calculatedSellerProfitForThisItem = (rawGoldPriceForThisItem * sellerProfitPercentage) / 100;
+
+                totalRawGoldPrice += rawGoldPriceForThisItem;
+                totalCalculatedWage += calculatedWageForThisItem;
+                totalCalculatedSellerProfit += calculatedSellerProfitForThisItem;
+            });
+
+
+            let totalCalculatedTaxAmount = 0;
+            if (enableTax) {
+                totalCalculatedTaxAmount = (totalCalculatedWage + totalCalculatedSellerProfit) * 0.10;
+            }
+
+            const totalFinalPrice = totalRawGoldPrice + totalCalculatedWage + totalCalculatedSellerProfit + totalCalculatedTaxAmount;
 
             // Display results
-            document.getElementById('rawGoldPrice').textContent = formatCurrency(rawGoldPrice);
-            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(calculatedWage);
-            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(calculatedSellerProfit);
-            document.getElementById('calculatedTax').textContent = formatCurrency(calculatedTaxAmount);
+            document.getElementById('totalRawGoldPrice').textContent = formatCurrency(totalRawGoldPrice);
+            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(totalCalculatedWage);
+            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(totalCalculatedSellerProfit);
+            document.getElementById('calculatedTax').textContent = formatCurrency(totalCalculatedTaxAmount);
             document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
         }
 
         // Helper function to format numbers with commas
         function formatCurrency(num) {
+            // Handle cases where num might be 0 or NaN after calculation errors
+            if (isNaN(num) || num === null) return '0';
             return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
     </script>
