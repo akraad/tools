@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه‌گر طلای مینیمال</title>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <title>محاسبه‌گر طلا</title> <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         /* General Body Styling - Super Minimal Light Theme */
         body {
             font-family: 'Vazirmatn', sans-serif;
             margin: 0;
-            padding: 20px; /* Overall page padding */
-            background-color: #F0F2F5; /* Very light, almost white-gray */
+            padding: 20px;
+            background-color: #F0F2F5;
             color: #333;
             display: flex;
             flex-direction: column;
@@ -24,82 +22,54 @@
 
         /* Calculator Container - The core card */
         .calculator-container {
-            background-color: #FFFFFF; /* Pure white card */
-            padding: 25px; /* Slightly less padding for smaller size */
-            border-radius: 10px; /* Softly rounded corners */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle, clean shadow */
+            background-color: #FFFFFF;
+            padding: 20px; /* Reduced padding */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 380px; /* Much smaller max-width */
-            margin-top: 30px; /* Space from top */
-            position: relative; /* For back icon positioning */
-            border: 1px solid #E5E7EB; /* Very subtle border */
+            max-width: 350px; /* Further reduced max-width for compact design */
+            margin-top: 30px;
+            position: relative;
+            border: 1px solid #E5E7EB;
         }
 
-        /* Back Icon Button - Integrated into the card */
-        .back-icon {
-            position: absolute;
-            top: 15px; /* Closer to top edge */
-            left: 15px; /* Closer to left edge */
-            font-size: 20px; /* Smaller icon */
-            color: #6B7280; /* Muted gray */
-            text-decoration: none;
-            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px; /* Smaller clickable area */
-            height: 30px;
-            border-radius: 5px; /* Slightly rounded square, not circular */
-        }
-
-        .back-icon:hover {
-            color: #333;
-            background-color: rgba(0, 0, 0, 0.03); /* Very light hover effect */
-        }
-
-        /* Calculator Title */
+        /* Calculator Title (removed from display) */
         .calculator-title {
-            font-size: 1.5em; /* Smaller, clean title */
-            color: #2D3748; /* Darker text for title */
-            text-align: center;
-            margin-top: 5px; /* Space from back icon */
-            margin-bottom: 25px; /* Space below title */
-            font-weight: 600;
+            display: none; /* Hide the title */
         }
 
         .input-group {
-            margin-bottom: 18px; /* Reduced margin between input groups */
+            margin-bottom: 15px; /* Reduced margin between input groups */
             display: flex;
             flex-direction: column;
         }
 
         .input-group label {
-            margin-bottom: 6px; /* Reduced space between label and input */
-            font-size: 0.9em; /* Smaller label font */
+            margin-bottom: 5px; /* Reduced space between label and input */
+            font-size: 0.88em; /* Smaller label font */
             color: #555;
             font-weight: 500;
         }
 
         /* Gold Price Input - Subtle distinction */
         .gold-price-input-group {
-            background-color: #F8F9FA; /* Slightly off-white, very subtle */
-            padding: 12px;
+            background-color: #F8F9FA;
+            padding: 10px; /* Reduced padding */
             border-radius: 8px;
             border: 1px solid #E0E0E0;
-            margin-bottom: 25px; /* A bit more space below */
+            margin-bottom: 20px; /* Reduced space below */
         }
 
         /* Styling for all number inputs and selects */
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 16px); /* Adjust for padding and border */
-            padding: 8px; /* Even smaller padding */
-            border: 1px solid #D1D5DB; /* Light gray border */
+            width: calc(100% - 16px); /* Adjust for padding and border, width reduced */
+            padding: 7px; /* Even smaller padding */
+            border: 1px solid #D1D5DB;
             border-radius: 6px;
-            background-color: #FFFFFF; /* White background for inputs */
+            background-color: #FFFFFF;
             color: #333;
-            font-size: 0.95em; /* Smaller input font size */
+            font-size: 0.9em; /* Smaller input font size */
             direction: ltr;
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -112,39 +82,39 @@
             margin: 0;
         }
 
-        /* Placeholder specific styling */
+        /* Placeholder specific styling (removed text, but kept for general consistency if re-added) */
         .input-group input::placeholder {
             font-family: 'Vazirmatn', sans-serif;
-            color: #B0B0B0; /* Lighter color for placeholders */
-            font-weight: 300; /* Even lighter weight */
+            color: #B0B0B0;
+            font-weight: 300;
         }
 
         .input-group input[type="number"]:focus,
         .input-group select:focus {
             outline: none;
-            border-color: #6366F1; /* Modern indigo accent */
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); /* Soft, smaller glow */
+            border-color: #6366F1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 18px; /* Reduced margin */
+            margin-bottom: 15px;
             justify-content: flex-end;
         }
 
         .checkbox-group label {
-            margin-right: 8px; /* Reduced space for checkbox label */
-            font-size: 0.9em; /* Match label font size */
+            margin-right: 8px;
+            font-size: 0.88em;
             cursor: pointer;
             color: #555;
             font-weight: 400;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: 16px; /* Smaller checkbox */
+            width: 16px;
             height: 16px;
-            accent-color: #4CAF50; /* Green accent for checked state */
+            accent-color: #4CAF50;
             cursor: pointer;
             border: 1px solid #CCC;
             border-radius: 3px;
@@ -152,170 +122,137 @@
 
         /* Dynamic Weight Fields Container - Background Gray */
         #weights-container {
-            margin-bottom: 20px; /* Reduced margin */
-            padding: 12px; /* Smaller padding */
+            margin-bottom: 15px; /* Reduced margin */
+            padding: 10px; /* Reduced padding */
             border-radius: 8px;
-            background-color: #F8F9FA; /* Very light gray for this section */
+            background-color: #F8F9FA;
             border: 1px solid #E0E0E0;
-            padding-bottom: 5px; /* Adjust for aesthetics */
+            padding-bottom: 5px;
         }
-        #weights-container .input-group {
-            margin-bottom: 12px; /* Reduced margin for items within the gray box */
-        }
-        #weights-container .input-group:last-child {
-            margin-bottom: 0;
-        }
-
-
-        .weight-item {
+        #weights-container .item-row { /* New class for each row (input + buttons) */
             display: flex;
-            align-items: center; /* Align items to center for better visual */
-            margin-bottom: 10px; /* Reduced margin between weight items */
+            align-items: center; /* Vertically align items */
+            margin-bottom: 10px; /* Space between rows */
         }
-
-        .weight-item:last-child {
+        #weights-container .item-row:last-child {
             margin-bottom: 0;
         }
 
-        .weight-item .input-group {
-            flex-grow: 1;
-            margin-bottom: 0;
-            margin-right: 8px; /* Reduced space */
+        #weights-container .item-row .input-group {
+            flex-grow: 1; /* Input takes most space */
+            margin-bottom: 0; /* Remove default margin */
         }
-        /* Style the label for weight inputs more compactly */
-        .weight-item .input-group label {
-            width: auto; /* Allow label to take minimal width */
-            margin-right: 5px; /* Space between label and input itself */
-            white-space: nowrap; /* Prevent label from wrapping */
+        #weights-container .item-row .input-group label {
             flex-shrink: 0; /* Prevent label from shrinking */
+            margin-right: 5px;
         }
-        /* Make the weight input itself take remaining space */
-        .weight-item .input-group input {
-            flex-grow: 1;
-            width: auto; /* Let flexbox handle width */
+        #weights-container .item-row .input-group input {
+            flex-grow: 1; /* Input takes remaining width */
         }
 
-        .add-weight-button {
-            background-color: #4CAF50; /* Green for add button */
+        /* Button styling for + and - */
+        .action-button {
+            background-color: #6366F1; /* Indigo for buttons */
             color: #FFFFFF;
             border: none;
-            border-radius: 50%;
-            width: 30px; /* Smaller button */
-            height: 30px;
-            font-size: 20px; /* Smaller plus sign */
+            border-radius: 50%; /* Circular */
+            width: 28px; /* Smaller button */
+            height: 28px;
+            font-size: 18px; /* Smaller font size for + / - */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
-            flex-shrink: 0;
-            margin-top: 5px; /* Less space */
+            flex-shrink: 0; /* Prevent shrinking */
+            margin-left: 5px; /* Space between input and button */
+        }
+        .action-button.remove-button {
+            background-color: #EF4444; /* Red for remove button */
         }
 
-        .add-weight-button:hover {
-            background-color: #43A047;
+        .action-button:hover {
             transform: scale(1.05);
         }
-
-        .remove-weight-button {
-            background-color: #EF4444; /* Red for remove button (Tailwind red-500) */
-            color: #FFFFFF;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px; /* Smaller minus sign */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-left: 6px; /* Reduced space */
-            flex-shrink: 0;
+        .action-button:hover:not(.remove-button) {
+             background-color: #4F46E5; /* Darker indigo on hover */
         }
-
-        .remove-weight-button:hover {
+        .action-button.remove-button:hover {
             background-color: #DC2626; /* Darker red on hover */
-            transform: scale(1.05);
         }
 
 
         button.calculate-button {
             width: 100%;
-            padding: 12px 18px; /* Reduced padding */
-            background-color: #6366F1; /* Modern indigo */
+            padding: 10px 15px; /* Reduced padding */
+            background-color: #4CAF50; /* Green for main calculate button */
             color: #FFFFFF;
             border: none;
             border-radius: 6px;
-            font-size: 1.05em; /* Slightly smaller button font */
+            font-size: 1em; /* Smaller button font */
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.2); /* Softer shadow */
-            margin-top: 20px; /* Reduced space */
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.2); /* Softer shadow */
+            margin-top: 20px;
         }
 
         button.calculate-button:hover {
-            background-color: #4F46E5; /* Darker indigo on hover */
-            transform: translateY(-1px); /* Less dramatic lift */
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            background-color: #43A047;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
         }
 
         .result-section {
-            margin-top: 25px; /* Reduced margin */
-            padding-top: 20px;
-            border-top: 1px dashed #E5E7EB; /* Lighter, subtle dashed line */
+            margin-top: 25px;
+            padding-top: 15px; /* Reduced padding */
+            border-top: 1px dashed #E5E7EB;
             text-align: center;
-            line-height: 1.5; /* More compact line height */
+            line-height: 1.5;
         }
 
         .result-section h3 {
-            font-size: 1.15em; /* Smaller result title */
-            color: #2D3748; /* Darker text */
-            margin-bottom: 12px; /* Reduced margin */
+            font-size: 1.1em; /* Smaller result title */
+            color: #2D3748;
+            margin-bottom: 10px; /* Reduced margin */
             font-weight: 600;
         }
 
         .result-section p {
-            font-size: 0.88em; /* Smaller result text */
-            margin-bottom: 3px; /* Very small margin for compact results */
+            font-size: 0.85em; /* Smaller result text */
+            margin-bottom: 3px;
             color: #555;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 0 5px; /* Reduced padding */
+            padding: 0 5px;
         }
         .result-section p.total-result {
-            font-size: 1.05em; /* Slightly smaller final total */
+            font-size: 1em; /* Slightly smaller final total */
             font-weight: 600;
-            color: #2D3748; /* Darker for final total */
-            margin-top: 12px; /* Reduced margin */
+            color: #2D3748;
+            margin-top: 12px;
             padding-top: 8px;
-            border-top: 1px solid #EFF1F3; /* Very light border */
+            border-top: 1px solid #EFF1F3;
         }
 
         .result-section strong {
-            color: #6366F1; /* Modern indigo for values */
-            font-size: 1.1em; /* Smaller value font */
+            color: #6366F1;
+            font-size: 1.05em; /* Smaller value font */
             font-weight: 700;
-            margin-right: 3px; /* Reduced space */
+            margin-right: 3px;
         }
 
         .result-section span.currency {
-            color: #777; /* More muted currency text */
-            font-size: 0.8em; /* Smaller currency text */
-            margin-left: 3px; /* Reduced space */
+            color: #777;
+            font-size: 0.75em; /* Smaller currency text */
+            margin-left: 3px;
         }
     </style>
 </head>
 <body>
 
     <div class="calculator-container">
-        <a href="index.html" class="back-icon" title="بازگشت به صفحه اصلی">
-            <i class="material-icons-outlined">arrow_back</i>
-        </a>
-        <h2 class="calculator-title">محاسبه‌گر طلای مینیمال</h2>
-
         <div class="checkbox-group">
             <label for="enableTax">محاسبه مالیات ۱۰%</label>
             <input type="checkbox" id="enableTax" checked>
@@ -323,17 +260,12 @@
 
         <div class="input-group gold-price-input-group">
             <label for="goldPrice">قیمت هر گرم طلا (تومان):</label>
-            <input type="number" id="goldPrice" placeholder="مثال: 3,500,000" min="0">
+            <input type="number" id="goldPrice" min="0">
         </div>
 
         <div id="weights-container">
             </div>
-        <button type="button" class="add-weight-button" onclick="addWeightInput()">+</button>
-
-        <div class="input-group">
-            <label for="wage">اجرت (درصد):</label>
-            <input type="number" id="wage" placeholder="مثال: 15" min="0" max="100">
-        </div>
+        <button type="button" class="action-button add-item-button" onclick="addItemRow()">+</button>
 
         <div class="input-group">
             <label for="sellerProfit">سود فروشنده (درصد):</label>
@@ -353,119 +285,95 @@
         <div class="result-section">
             <h3>نتایج محاسبه:</h3>
             <p><span>قیمت طلا خام کل:</span> <strong><span id="totalRawGoldPrice">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>اجرت:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>سود فروشنده:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>اجرت کل:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>سود فروشنده کل:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
             <p><span>مالیات محاسبه شده کل:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
             <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
         </div>
     </div>
 
     <script>
-        let weightInputCounter = 0; // To keep track of unique IDs for weight inputs
+        let itemCounter = 0; // To keep track of unique IDs for each item row
 
-        // Function to add a new weight input field
-        function addWeightInput() {
-            weightInputCounter++;
+        // Function to add a new item row (weight + wage)
+        function addItemRow() {
+            itemCounter++;
             const weightsContainer = document.getElementById('weights-container');
-            const weightItemDiv = document.createElement('div');
-            weightItemDiv.classList.add('weight-item');
-            weightItemDiv.id = `weight-item-${weightInputCounter}`;
+            const itemRowDiv = document.createElement('div');
+            itemRowDiv.classList.add('item-row');
+            itemRowDiv.id = `item-row-${itemCounter}`;
 
-            // Create input group for the weight field
-            const inputGroupDiv = document.createElement('div');
-            inputGroupDiv.classList.add('input-group');
-            inputGroupDiv.style.flexDirection = 'row'; /* Make label and input align horizontally */
-            inputGroupDiv.style.alignItems = 'center';
-
-            const label = document.createElement('label');
-            label.setAttribute('for', `goldWeight-${weightInputCounter}`);
-            label.textContent = `وزن طلا (${weightInputCounter}):`;
-
-            const input = document.createElement('input');
-            input.setAttribute('type', 'number');
-            input.setAttribute('id', `goldWeight-${weightInputCounter}`);
-            input.classList.add('gold-weight-input');
-            input.setAttribute('placeholder', '5.25');
-            input.setAttribute('step', '0.01');
-            input.setAttribute('min', '0');
-
-            inputGroupDiv.appendChild(label);
-            inputGroupDiv.appendChild(input);
-
-            weightItemDiv.appendChild(inputGroupDiv);
-
-            // Add remove button if it's not the first field
-            if (weightInputCounter > 1) { // Only show remove button if there's more than one field
-                const removeButton = document.createElement('button');
-                removeButton.setAttribute('type', 'button');
-                removeButton.classList.add('remove-weight-button');
-                removeButton.setAttribute('onclick', `removeWeightInput('weight-item-${weightInputCounter}')`);
-                removeButton.textContent = '−';
-                weightItemDiv.appendChild(removeButton);
-            }
-            
-            weightsContainer.appendChild(weightItemDiv);
+            itemRowDiv.innerHTML = `
+                <div class="input-group">
+                    <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
+                </div>
+                <div class="input-group" style="margin-right: 5px;"> <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
+                    <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100">
+                </div>
+                ${itemCounter > 1 ? `<button type="button" class="action-button remove-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>` : ''}
+            `;
+            weightsContainer.appendChild(itemRowDiv);
         }
 
-        // Function to remove a weight input field
-        function removeWeightInput(id) {
+        // Function to remove an item row
+        function removeItemRow(id) {
             const itemToRemove = document.getElementById(id);
             if (itemToRemove) {
                 itemToRemove.remove();
             }
         }
 
-        // Add the initial weight input field when the page loads
+        // Add the initial item row when the page loads
         document.addEventListener('DOMContentLoaded', () => {
-            addWeightInput();
+            addItemRow();
         });
-
 
         function calculateGoldPrice() {
             const goldPricePerGram = parseFloat(document.getElementById('goldPrice').value);
             const enableTax = document.getElementById('enableTax').checked;
-            const wagePercentage = parseFloat(document.getElementById('wage').value) || 0;
             const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
-            // Input validation for gold price
             if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
                 alert('لطفاً قیمت هر گرم طلا را به درستی وارد کنید.');
                 return;
             }
 
-            // Get all weight input fields
             const weightInputs = document.querySelectorAll('.gold-weight-input');
-            let totalRawGoldPrice = 0;
-            let totalCalculatedWage = 0;
-            let totalCalculatedSellerProfit = 0;
+            const wageInputs = document.querySelectorAll('.wage-input');
 
             if (weightInputs.length === 0) {
-                 alert('لطفاً حداقل یک وزن طلا را وارد کنید.');
+                 alert('لطفاً حداقل یک آیتم (وزن و اجرت) را وارد کنید.');
                  return;
             }
 
-            let hasInvalidWeight = false;
-            weightInputs.forEach(input => {
-                const goldWeight = parseFloat(input.value);
+            let totalRawGoldPrice = 0;
+            let totalCalculatedWage = 0;
+            let totalCalculatedSellerProfit = 0;
+            let hasInvalidInput = false;
+
+            weightInputs.forEach((weightInput, index) => {
+                const goldWeight = parseFloat(weightInput.value);
+                const wagePercentage = parseFloat(wageInputs[index].value) || 0; // Get corresponding wage
 
                 if (isNaN(goldWeight) || goldWeight <= 0) {
-                    hasInvalidWeight = true;
+                    hasInvalidInput = true;
                 } else {
                     const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
                     const calculatedWageForThisItem = (rawGoldPriceForThisItem * wagePercentage) / 100;
-                    const calculatedSellerProfitForThisItem = (rawGoldPriceForThisItem * sellerProfitPercentage) / 100;
 
                     totalRawGoldPrice += rawGoldPriceForThisItem;
                     totalCalculatedWage += calculatedWageForThisItem;
-                    totalCalculatedSellerProfit += calculatedSellerProfitForThisItem;
                 }
             });
 
-            if (hasInvalidWeight) {
-                alert('لطفاً همه وزن‌های طلا را به درستی وارد کنید.');
+            if (hasInvalidInput) {
+                alert('لطفاً همه وزن‌ها و اجرت‌ها را به درستی وارد کنید.');
                 return;
             }
 
+            // Seller profit is calculated based on total raw gold price
+            totalCalculatedSellerProfit = (totalRawGoldPrice * sellerProfitPercentage) / 100;
 
             let totalCalculatedTaxAmount = 0;
             if (enableTax) {
