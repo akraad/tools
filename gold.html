@@ -41,6 +41,7 @@
 
         /* Calculator Container */
         .calculator-container {
+            font-family: 'Vazirmatn', sans-serif; /* Ensure Vazirmatn throughout */
             background-color: var(--card-background);
             padding: 30px; /* More padding */
             border-radius: var(--border-radius-main);
@@ -70,7 +71,7 @@
             font-weight: 400;
         }
 
-        /* Input Groups (Main sections like Gold Price, Seller Profit) */
+        /* Input Groups (Main sections like Gold Price) */
         .input-group {
             margin-bottom: 25px;
             display: flex;
@@ -159,21 +160,7 @@
             border-radius: 4px;
         }
 
-        /* Seller Profit specific styling (no text in words, smaller select) */
-        #sellerProfit {
-            width: 100px; /* Fixed smaller width */
-            padding: 8px 12px; /* Adjusted padding */
-            height: auto; /* Auto height for padding */
-            font-size: 1em;
-            text-align: center;
-        }
-        /* Remove its text-in-words display margin-top if it exists */
-        #sellerProfit + .text-in-words {
-            margin-top: 0; /* Remove extra space if text-in-words was conceptually below it */
-            display: none; /* Explicitly hide if still there */
-        }
-
-        /* Items Container (for Weight and Wage rows) */
+        /* Items Container (for Weight, Wage, and now Seller Profit rows) */
         #items-container {
             margin-bottom: 25px;
             padding: 0;
@@ -208,23 +195,23 @@
             transform: scale(1.1) rotate(5deg); /* Add slight rotation */
         }
 
-        /* Each Item Row (Weight and Wage) */
+        /* Each Item Row (Weight, Wage, Seller Profit) */
         .item-row {
             display: flex;
-            flex-direction: column; /* Stack fields within an item row */
+            flex-direction: column; /* Stack fields vertically within an item row */
             padding: 20px; /* More padding */
             border-radius: var(--border-radius-sm);
             background-color: #f8f9fa; /* Consistent background with main input groups */
             border: 1px solid #e0e4e8; /* Consistent border */
             margin-bottom: 18px; /* Space between item rows */
             position: relative;
-            gap: 15px; /* Space between weight and wage input groups */
+            gap: 15px; /* Space between input groups inside an item */
         }
         .item-row:last-child {
             margin-bottom: 0;
         }
         
-        /* Input Groups within Item Row (Weight and Wage) */
+        /* Input Groups within Item Row (Weight, Wage, Seller Profit) */
         .item-input-group {
             display: flex;
             flex-direction: column;
@@ -235,7 +222,6 @@
             color: var(--text-color);
             font-weight: 500;
         }
-        /* Input styling within item-input-group is covered by general input rules */
         
         /* Specific styling for wage input and type */
         .item-input-group .wage-input-and-type {
@@ -463,20 +449,7 @@
             <input type="text" id="goldPrice" inputmode="decimal" oninput="formatGoldPrice(this.value, 7, 2)">
             <div id="goldPriceInWords" class="text-in-words">صفر تومان</div>
         </div>
-
-        <div class="input-group">
-            <label for="sellerProfit">سود فروشنده:</label>
-            <select id="sellerProfit">
-                <option value="1">1%</option>
-                <option value="2">2%</option>
-                <option value="3">3%</option>
-                <option value="4">4%</option>
-                <option value="5">5%</option>
-                <option value="6">6%</option>
-                <option selected value="7">7%</option>
-            </select>
-        </div>
-
+        
         <div id="items-container">
             </div>
         <button type="button" id="add-item-global-button" onclick="addItemRow()">+</button>
@@ -496,7 +469,7 @@
         let itemCounter = 0;
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
-        const sellerProfitSelect = document.getElementById('sellerProfit');
+        // sellerProfitSelect is now per-item, removed global reference here
         const detailedResultsDisplay = document.getElementById('detailedResults');
 
         // Persian digit mapping
@@ -602,14 +575,7 @@
             updateGoldPriceInWords();
         }
 
-        // Update gold price in words
-        function updateGoldPriceInWords() {
-            const rawValue = toLatinDigits(goldPriceInput.value).replace(/,/g, ''); 
-            const numValue = parseFloat(rawValue) || 0; // Use parseFloat to handle decimals
-            goldPriceInWordsDisplay.textContent = `${convertNumberToWords(Math.floor(numValue))} تومان`;
-        }
-
-        // Add a new item row (weight & wage)
+        // Add a new item row (weight & wage & seller profit)
         function addItemRow() {
             itemCounter++;
             const itemsContainer = document.getElementById('items-container');
@@ -634,6 +600,18 @@
                         </select>
                     </div>
                 </div>
+                <div class="item-input-group">
+                    <label for="sellerProfit-${itemCounter}">سود فروشنده (${toPersianDigits(itemCounter)}):</label>
+                    <select id="sellerProfit-${itemCounter}" class="seller-profit-select">
+                        <option value="1">1%</option>
+                        <option value="2">2%</option>
+                        <option value="3">3%</option>
+                        <option value="4">4%</option>
+                        <option value="5">5%</option>
+                        <option value="6">6%</option>
+                        <option selected value="7">7%</option>
+                    </select>
+                </div>
             `;
             itemsContainer.appendChild(itemRowDiv);
 
@@ -657,12 +635,19 @@
                 const currentNum = index + 1;
                 row.id = `item-row-${currentNum}`;
                 
+                // Update Weight field
                 row.querySelector('.gold-weight-input').id = `goldWeight-${currentNum}`;
                 row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${toPersianDigits(currentNum)}):`;
                 
+                // Update Wage field
                 row.querySelector('.wage-input').id = `wage-${currentNum}`;
                 row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${toPersianDigits(currentNum)}):`;
                 row.querySelector('.wage-type-select').id = `wageType-${currentNum}`;
+
+                // Update Seller Profit field
+                row.querySelector('.seller-profit-select').id = `sellerProfit-${currentNum}`;
+                row.querySelector('.seller-profit-select').parentNode.querySelector('label').textContent = `سود فروشنده (${toPersianDigits(currentNum)}):`;
+
 
                 const deleteButton = row.querySelector('.delete-item-button');
                 if (deleteButton) {
@@ -676,7 +661,6 @@
         function calculateGoldPrice() {
             const goldPricePerGram = parseFloat(toLatinDigits(goldPriceInput.value).replace(/,/g, ''));
             const enableTax = document.getElementById('enableTax').checked;
-            const sellerProfitPercentage = parseFloat(sellerProfitSelect.value);
 
             if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
                 detailedResultsDisplay.innerHTML = '';
@@ -688,6 +672,7 @@
             const goldWeightInputs = document.querySelectorAll('.gold-weight-input');
             const wageInputs = document.querySelectorAll('.wage-input');
             const wageTypeSelects = document.querySelectorAll('.wage-type-select');
+            const sellerProfitSelects = document.querySelectorAll('.seller-profit-select'); // New: get all seller profit selects
 
             if (goldWeightInputs.length === 0) {
                 detailedResultsDisplay.innerHTML = '';
@@ -703,6 +688,7 @@
             goldWeightInputs.forEach((weightInput, index) => {
                 const goldWeight = parseFloat(toLatinDigits(weightInput.value)); 
                 const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)); 
+                const sellerProfitPercentage = parseFloat(sellerProfitSelects[index].value); // Read seller profit for THIS item
 
                 const actualWageValue = isNaN(wageValue) ? 0 : wageValue;
 
@@ -759,18 +745,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             addItemRow(); // Add one initial item row
             updateGoldPriceInWords(); // Update gold price in words for initial state
-            // sellerProfitDisplay is removed, so no need to update it
             calculateGoldPrice(); // Initial calculation
         });
 
         // Event listeners for recalculation on input changes
         goldPriceInput.addEventListener('input', calculateGoldPrice);
-        sellerProfitSelect.addEventListener('change', calculateGoldPrice);
         document.getElementById('enableTax').addEventListener('change', calculateGoldPrice);
         document.getElementById('items-container').addEventListener('input', (event) => {
             if (event.target.classList.contains('gold-weight-input') || 
                 event.target.classList.contains('wage-input') ||
-                event.target.classList.contains('wage-type-select')) {
+                event.target.classList.contains('wage-type-select') ||
+                event.target.classList.contains('seller-profit-select')) { // Added listener for new seller profit select
                 calculateGoldPrice();
             }
         });
