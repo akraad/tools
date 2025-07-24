@@ -75,6 +75,11 @@
             -moz-appearance: textfield;
             font-family: 'Vazirmatn', sans-serif !important;
         }
+        /* Make sellerProfit select box same size as goldPrice input */
+        #sellerProfit {
+            width: calc(100% - 16px); /* Same calculation as other inputs */
+        }
+
 
         .input-group input[type="number"]::-webkit-outer-spin-button,
         .input-group input[type="number"]::-webkit-inner-spin-button {
@@ -130,19 +135,30 @@
 
         .item-row {
             display: flex;
-            align-items: flex-end;
+            align-items: center; /* Align items to center */
             margin-bottom: 10px;
+            justify-content: space-between; /* Distribute space */
         }
         .item-row:last-child {
             margin-bottom: 0;
         }
 
         .item-row .input-wrapper {
-            flex-grow: 1;
             display: flex;
             flex-direction: column;
             margin-bottom: 0;
-            margin-right: 5px;
+            margin-left: 5px; /* Space from buttons */
+        }
+        /* Make weight input narrower */
+        .item-row .input-wrapper.weight-input-wrapper {
+            flex-basis: 45%; /* Give weight input a fixed smaller width */
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+        .item-row .input-wrapper.wage-input-wrapper {
+            flex-basis: 45%; /* Give wage input a fixed smaller width */
+            flex-grow: 0;
+            flex-shrink: 0;
         }
         .item-row .input-wrapper label {
             margin-bottom: 5px;
@@ -155,12 +171,14 @@
             width: auto;
         }
 
-        .item-action-buttons {
+        /* Combined buttons container for plus/minus */
+        .item-row .item-action-buttons-wrapper {
             display: flex;
             flex-direction: column;
-            margin-left: 8px;
             gap: 5px;
+            flex-shrink: 0; /* Prevent shrinking */
         }
+
         .item-action-button {
             background-color: #6366F1;
             color: #FFFFFF;
@@ -188,6 +206,12 @@
         }
         .item-action-button.remove-button:hover {
             background-color: #DC2626;
+        }
+        /* Main add item button below items container */
+        .add-item-main-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
         }
 
         button.calculate-button {
@@ -274,7 +298,7 @@
 
         <div id="items-container">
             </div>
-        <div class="item-action-buttons" style="flex-direction: row; justify-content: center; margin-left: 0; margin-top: 10px;">
+        <div class="add-item-main-button-container">
             <button type="button" class="item-action-button" onclick="addItemRow()">+</button>
         </div>
 
@@ -370,7 +394,7 @@
             itemRowDiv.id = `item-row-${itemCounter}`;
 
             itemRowDiv.innerHTML = `
-                <div class="input-wrapper">
+                <div class="input-wrapper weight-input-wrapper">
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
                     <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
                 </div>
@@ -378,11 +402,9 @@
                     <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
                     <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100">
                 </div>
-                ${itemCounter > 1 ? `
-                <div class="item-action-buttons">
-                    <button type="button" class="item-action-button remove-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>
+                <div class="item-action-buttons-wrapper">
+                    ${itemCounter > 1 ? `<button type="button" class="item-action-button remove-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>` : ''}
                 </div>
-                ` : ''}
             `;
             itemsContainer.appendChild(itemRowDiv);
         }
@@ -395,36 +417,41 @@
             }
         }
 
-        // Handles input for gold price: formats with commas and limits length
+        // Handles input for gold price: formats with commas without limiting length initially
         function handleGoldPriceInput(input) {
             let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas
             updateGoldPriceInWords();
         }
 
-        // Handles blur for gold price: appends zeros based on length
+        // Handles blur for gold price: appends zeros based on length, no hard limit on input for user
         function handleGoldPriceBlur(input) {
             let value = input.value.replace(/,/g, ''); // Remove commas for zero logic
+            let originalLength = value.length;
 
-            if (value.length > 0 && value.length < 7) {
-                if (value.length === 1) { // e.g., '7' -> '7000000'
-                    value += '000000';
-                } else if (value.length >= 2 && value.length <= 3) { // e.g., '71', '695' -> '7100000', '6950000'
-                    value += '00000'; // Always add 5 zeros
-                } else if (value.length === 4) { // e.g., '7140' -> '7140000'
-                    value += '000';
-                } else if (value.length === 5) { // e.g., '71400' -> '7140000'
-                    value += '00';
-                } else if (value.length === 6) { // e.g., '714000' -> '7140000'
-                    value += '0';
+            if (originalLength > 0 && originalLength < 7) {
+                // If user types 1 digit (e.g., '6'), make it 6,000,000 (6 zeros)
+                if (originalLength === 1) { // e.g., '6'
+                    value = value + '000000';
                 }
-            } else if (value.length === 7 && value.endsWith('00')) {
-                // If user inputs 7 digits ending in 00, ensure it doesn't get messed up if they started with fewer.
-                // This scenario might need more specific handling based on exact use case
-                // For now, if it's 7 digits, we assume it's correct and don't append more zeros.
-            } else if (value.length > 7) {
-                value = value.substring(0, 7); // Ensure it doesn't exceed 7 digits + appended zeros (total value length)
+                // If user types 2 or 3 digits (e.g., '60', '600'), make it 6,000,000 (5 zeros)
+                else if (originalLength === 2 || originalLength === 3) { // e.g., '60', '600'
+                    value = value + '00000';
+                }
+                 // If user types 4 digits (e.g., '6000'), make it 6,000,000 (3 zeros)
+                else if (originalLength === 4) { // e.g., '6000'
+                    value = value + '000';
+                }
+                 // If user types 5 digits (e.g., '60000'), make it 6,000,000 (2 zeros)
+                else if (originalLength === 5) { // e.g., '60000'
+                    value = value + '00';
+                }
+                 // If user types 6 digits (e.g., '600000'), make it 6,000,000 (1 zero)
+                else if (originalLength === 6) { // e.g., '600000'
+                    value = value + '0';
+                }
             }
+            // If user enters 7 or more digits, no automatic zeros are added.
             
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas back
             updateGoldPriceInWords();
