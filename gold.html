@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه‌گر قیمت طلا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* General Body Styling */
         body {
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Vazirmatn', sans-serif; /* Using Vazirmatn for entire body */
             margin: 0;
             padding: 0;
-            background-color: #212121; /* Dark Gray */
+            background-color: #1a1a1a; /* Even darker background for more contrast */
             color: #E0E0E0; /* Light Gray for text */
             display: flex;
             flex-direction: column;
@@ -25,29 +25,45 @@
             width: 100%;
             text-align: center;
             padding: 20px 0;
-            background-color: #2c2c2c; /* Slightly lighter dark gray */
-            border-bottom: 1px solid #3a3a3a; /* Subtle border */
+            background-color: #262626; /* Slightly lighter dark gray */
+            border-bottom: 1px solid #333; /* Subtle border */
             margin-bottom: 40px;
+            position: relative; /* For absolute positioning of back button */
         }
 
         .header-text {
-            font-family: 'Vazirmatn', sans-serif; /* A modern Persian font */
             font-size: 1.8em; /* Title size */
-            color: #BB86FC; /* A subtle blue/purple for accent */
+            color: #8D62ED; /* A more refined purple accent */
             margin: 0;
-            font-weight: 500;
+            font-weight: 600; /* Slightly bolder */
+        }
+
+        /* Back Button */
+        .back-button {
+            position: absolute;
+            top: 25px;
+            left: 20px; /* Position to the left */
+            font-size: 0.9em;
+            color: #6C757D; /* Muted gray for the link */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            direction: rtl; /* Ensure RTL for Persian text */
+        }
+
+        .back-button:hover {
+            color: #A0A0A0; /* Lighter on hover */
         }
 
         /* Calculator Container */
         .calculator-container {
-            background-color: #2c2c2c;
+            background-color: #262626; /* Match header background */
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             width: 90%;
-            max-width: 500px; /* Max width for the calculator */
+            max-width: 450px; /* Slightly narrower for more minimalism */
             margin-bottom: 60px;
-            border-right: 3px solid #03DAC6; /* Accent color */
+            border-right: 3px solid #00BFA5; /* Teal accent */
         }
 
         .input-group {
@@ -58,23 +74,23 @@
 
         .input-group label {
             margin-bottom: 8px;
-            font-size: 1em;
-            color: #E0E0E0;
+            font-size: 0.95em; /* Slightly smaller label font */
+            color: #C0C0C0; /* Softer label color */
             display: block;
         }
 
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 20px); /* Adjust for padding */
-            padding: 12px 10px;
+            width: calc(100% - 20px);
+            padding: 10px; /* Reduced padding for smaller inputs */
             border: 1px solid #3a3a3a;
             border-radius: 4px;
             background-color: #3a3a3a;
             color: #E0E0E0;
-            font-size: 1.1em;
+            font-size: 1em; /* Smaller input font */
             direction: ltr; /* For number inputs */
             text-align: right; /* For number inputs */
-            -moz-appearance: textfield; /* Hide arrows for Firefox */
+            -moz-appearance: textfield;
         }
         /* Hide arrows for Chrome, Safari, Edge */
         .input-group input[type="number"]::-webkit-outer-spin-button,
@@ -86,8 +102,8 @@
         .input-group input[type="number"]:focus,
         .input-group select:focus {
             outline: none;
-            border-color: #BB86FC; /* Accent color on focus */
-            box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+            border-color: #8D62ED; /* Accent color on focus */
+            box-shadow: 0 0 0 2px rgba(141, 98, 237, 0.3);
         }
 
         .checkbox-group {
@@ -98,33 +114,34 @@
         }
 
         .checkbox-group label {
-            margin-right: 10px; /* Space between checkbox and label */
-            font-size: 1em;
+            margin-right: 10px;
+            font-size: 0.95em; /* Match label font size */
             cursor: pointer;
+            color: #C0C0C0; /* Softer label color */
         }
 
         .checkbox-group input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #03DAC6; /* Color for checked state */
+            accent-color: #00BFA5; /* Color for checked state */
             cursor: pointer;
         }
 
         button {
             width: 100%;
-            padding: 15px 20px;
-            background-color: #03DAC6; /* Teal button */
-            color: #212121; /* Dark text on button */
+            padding: 14px 20px; /* Slightly reduced button padding */
+            background-color: #00BFA5; /* Teal button */
+            color: #1a1a1a; /* Dark text on button */
             border: none;
             border-radius: 4px;
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.1em; /* Slightly smaller button font */
+            font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
         }
 
         button:hover {
-            background-color: #00BFA5; /* Darker teal on hover */
+            background-color: #009688; /* Darker teal on hover */
             transform: translateY(-2px);
         }
 
@@ -136,22 +153,22 @@
         }
 
         .result-section p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
+            font-size: 1em; /* Result text font size */
+            margin-bottom: 8px; /* Reduced margin */
             color: #E0E0E0;
         }
 
         .result-section strong {
-            color: #BB86FC; /* Accent color for values */
-            font-size: 1.3em;
-            display: block; /* Ensures value is on its own line */
-            margin-top: 5px;
+            color: #8D62ED; /* Accent color for values */
+            font-size: 1.2em; /* Slightly smaller value font */
+            display: block;
+            margin-top: 4px;
         }
 
         /* Footer Styling */
         .footer {
             margin-top: auto; /* Pushes footer to the bottom */
-            font-size: 0.85em;
+            font-size: 0.8em; /* Slightly smaller footer font */
             color: #9E9E9E; /* Muted gray for copyright */
             padding: 20px;
             width: 100%;
@@ -163,12 +180,13 @@
 <body>
 
     <div class="header-container">
+        <a href="#" class="back-button" onclick="alert('اینجا لینک به صفحه اصلی شما قرار می‌گیرد.'); return false;">&lt; بازگشت به صفحه اصلی</a>
         <h1 class="header-text">محاسبه‌گر قیمت طلا</h1>
     </div>
 
     <div class="calculator-container">
         <div class="input-group">
-            <label for="goldPrice">قیمت هر گرم طلا (تومان):</label>
+            <label for="goldPrice">قیمت هر گرم طلا:</label>
             <input type="number" id="goldPrice" placeholder="مثال: 3,500,000" min="0">
         </div>
 
@@ -178,7 +196,7 @@
         </div>
 
         <div class="input-group">
-            <label for="wage">اجرت (درصد از قیمت طلا خام - اختیاری):</label>
+            <label for="wage">اجرت (درصد):</label>
             <input type="number" id="wage" placeholder="مثال: 15" min="0" max="100">
         </div>
 
@@ -204,9 +222,11 @@
 
         <div class="result-section">
             <p>قیمت طلا خام: <strong id="rawGoldPrice">0 تومان</strong></p>
-            <p>قیمت نهایی با اجرت و سود: <strong id="finalPriceBeforeTax">0 تومان</strong></p>
+            <p>اجرت محاسبه شده: <strong id="calculatedWageDisplay">0 تومان</strong></p>
+            <p>سود فروشنده محاسبه شده: <strong id="calculatedProfitDisplay">0 تومان</strong></p>
+            <p>قیمت نهایی قبل از مالیات: <strong id="finalPriceBeforeTax">0 تومان</strong></p>
             <p>مالیات محاسبه شده: <strong id="calculatedTax">0 تومان</strong></p>
-            <p>قیمت نهایی با مالیات: <strong id="totalFinalPrice">0 تومان</strong></p>
+            <p>قیمت نهایی کل: <strong id="totalFinalPrice">0 تومان</strong></p>
         </div>
     </div>
 
@@ -245,7 +265,6 @@
             let calculatedTaxAmount = 0;
             if (enableTax) {
                 // مالیات: (اجرت + سود فروشنده) × ۱۰ درصد
-                // طبق توضیحات شما، مالیات از روی اجرت و سود محاسبه می‌شود
                 calculatedTaxAmount = (calculatedWage + calculatedSellerProfit) * 0.10;
             }
 
@@ -254,6 +273,8 @@
 
             // Display results
             document.getElementById('rawGoldPrice').textContent = formatCurrency(rawGoldPrice) + ' تومان';
+            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(calculatedWage) + ' تومان';
+            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(calculatedSellerProfit) + ' تومان';
             document.getElementById('finalPriceBeforeTax').textContent = formatCurrency(priceBeforeTax) + ' تومان';
             document.getElementById('calculatedTax').textContent = formatCurrency(calculatedTaxAmount) + ' تومان';
             document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice) + ' تومان';
