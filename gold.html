@@ -443,12 +443,12 @@
             itemRowDiv.innerHTML = `
                 <div class="input-wrapper">
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
-                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0" oninput="formatNumberInputToPersian(this)">
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
                 </div>
                 <div class="input-wrapper wage-input-wrapper">
                     <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
                     <div class="wage-input-and-type">
-                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" oninput="formatNumberInputToPersian(this)">
+                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0">
                         <select id="wageType-${itemCounter}" class="wage-type-select">
                             <option value="percent">%</option>
                             <option value="amount">تومان</option>
@@ -461,22 +461,8 @@
             updateItemRowLabels();
         }
 
-        function formatNumberInputToPersian(inputElement) {
-            let latinValue = toLatinDigits(inputElement.value);
-            
-            // Allow only digits and one decimal point for goldWeight
-            if (inputElement.id.includes('goldWeight')) {
-                latinValue = latinValue.replace(/[^0-9.]/g, '');
-                const parts = latinValue.split('.');
-                if (parts.length > 2) {
-                    latinValue = parts[0] + '.' + parts.slice(1).join('');
-                }
-            } else { // For wage, allow only digits
-                latinValue = latinValue.replace(/[^0-9]/g, '');
-            }
-
-            inputElement.value = toPersianDigits(latinValue);
-        }
+        // Removed the formatNumberInputToPersian function from oninput of weight and wage fields
+        // Now numbers can be typed directly.
 
         function updateItemRowLabels() {
             document.querySelectorAll('.item-row').forEach((row, index) => {
@@ -496,12 +482,10 @@
             let latinValue = toLatinDigits(inputValue);
             latinValue = latinValue.replace(/[^0-9]/g, '');
 
-            // Removed maxlength restriction for goldPrice, but keeping 7-digit check for word conversion
-            if (latinValue.length > 7) { 
-                // This check is primarily for the 'convertNumberToWords' function, 
-                // if you truly want no limit, remove this 'if' block entirely.
-                // However, for practical word conversion, a soft limit is usually good.
-                latinValue = latinValue.substring(0, 7); 
+            // Removed maxlength restriction for goldPrice's visual format, but keeping 7-digit check for word conversion
+            // If you truly want absolutely no limit, remove the following 'if' block.
+            if (latinValue.length > 10) { // Increased the soft limit for example
+                latinValue = latinValue.substring(0, 10); 
             }
             
             let formattedValue = latinValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -551,14 +535,16 @@
                 // Convert to Latin for calculation, allowing decimal point for weight
                 const goldWeight = parseFloat(toLatinDigits(weightInput.value)); 
                 // Convert to Latin for calculation, integer for wage
-                const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)) || 0; 
-                const wageType = wageTypeSelects[index].value;
+                const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)); // Removed || 0 to catch empty values as NaN
 
-                if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wageValue) || wageValue < 0) {
+                // Ensure both weight and wage are valid numbers and non-negative
+                if (isNaN(goldWeight) || goldWeight < 0 || isNaN(wageValue) || wageValue < 0) {
                     hasInvalidInput = true;
                 } else {
                     const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
                     let calculatedWageForThisItem = 0;
+
+                    const wageType = wageTypeSelects[index].value; // Get wage type for current row
 
                     if (wageType === 'percent') {
                         calculatedWageForThisItem = (rawGoldPriceForThisItem * wageValue) / 100;
@@ -572,7 +558,7 @@
             });
 
             if (hasInvalidInput) {
-                alert('لطفاً همه وزن‌ها و اجرت‌ها را به درستی وارد کنید.');
+                alert('لطفاً همه وزن‌ها و اجرت‌ها را به درستی و به صورت اعداد مثبت وارد کنید.');
                 return;
             }
 
