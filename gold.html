@@ -377,6 +377,12 @@
             font-size: 0.8em;
             margin-left: 3px;
         }
+        .result-section .item-specific-price {
+            font-size: 0.9em; /* Slightly smaller for individual item prices */
+            color: #555; /* A bit darker for readability */
+            margin-right: 5px; /* Indent for sub-items */
+            margin-bottom: 3px;
+        }
 
         /* Mobile specific adjustments (for smaller screens) */
         @media (max-width: 400px) { 
@@ -447,8 +453,9 @@
 
         <div class="result-section">
             <h3>نتایج محاسبه:</h3>
-            <p><span>سود فروشنده کل:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
-            <p><span>مالیات محاسبه شده کل:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
+            <div id="detailedResults">
+                </div>
+            <p><span>جمع کل مالیات:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
             <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
         </div>
     </div>
@@ -459,6 +466,7 @@
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
         const sellerProfitSelect = document.getElementById('sellerProfit');
         const sellerProfitDisplay = document.getElementById('sellerProfitDisplay');
+        const detailedResultsDisplay = document.getElementById('detailedResults');
 
 
         const latinToPersianDigits = {
@@ -587,6 +595,7 @@
             if (rowToRemove) {
                 rowToRemove.remove();
                 updateItemRowLabels(); // Re-label remaining rows
+                calculateGoldPrice(); // Recalculate after deleting an item
             }
         }
 
@@ -644,6 +653,7 @@
             addItemRow(); 
             updateGoldPriceInWords();
             updateSellerProfitDisplay(); 
+            calculateGoldPrice(); // Initial calculation on load
         });
 
 
@@ -653,8 +663,11 @@
             const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
             if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
-                alert('لطفاً قیمت هر گرم طلا را به درستی وارد کنید.');
-                return;
+                // If gold price is invalid, clear results and return
+                detailedResultsDisplay.innerHTML = '';
+                document.getElementById('calculatedTax').textContent = formatCurrency(0);
+                document.getElementById('totalFinalPrice').textContent = formatCurrency(0);
+                return; 
             }
 
             const goldWeightInputs = document.querySelectorAll('.gold-weight-input');
@@ -662,55 +675,65 @@
             const wageTypeSelects = document.querySelectorAll('.wage-type-select');
 
             if (goldWeightInputs.length === 0) {
-                 alert('لطفاً حداقل یک آیتم (وزن و اجرت) را وارد کنید.');
-                 return;
+                // If no items, clear results and return
+                detailedResultsDisplay.innerHTML = '';
+                document.getElementById('calculatedTax').textContent = formatCurrency(0);
+                document.getElementById('totalFinalPrice').textContent = formatCurrency(0);
+                return;
             }
 
-            let totalRawGoldPrice = 0;
-            let totalCalculatedWage = 0;
-            let totalCalculatedSellerProfit = 0;
-            let hasInvalidInput = false;
+            let totalCalculatedTaxAmount = 0;
+            let grandTotalFinalPrice = 0;
+            let detailedResultsHTML = '';
 
             goldWeightInputs.forEach((weightInput, index) => {
                 const goldWeight = parseFloat(toLatinDigits(weightInput.value)); 
                 const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)); 
 
-                if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wageValue) || wageValue < 0) {
-                    hasInvalidInput = true;
-                } else {
-                    const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
-                    let calculatedWageForThisItem = 0;
+                // Handle optional wage: if NaN or empty, treat as 0
+                const actualWageValue = isNaN(wageValue) ? 0 : wageValue;
 
-                    const wageType = wageTypeSelects[index].value; 
-
-                    if (wageType === 'percent') {
-                        calculatedWageForThisItem = (rawGoldPriceForThisItem * wageValue) / 100;
-                    } else { // wageType === 'amount'
-                        calculatedWageForThisItem = goldWeight * wageValue; 
-                    }
-                    
-                    totalRawGoldPrice += rawGoldPriceForThisItem;
-                    totalCalculatedWage += calculatedWageForThisItem;
+                if (isNaN(goldWeight) || goldWeight <= 0) {
+                    // Skip invalid items or show a specific warning later if needed
+                    detailedResultsHTML += `<p class="item-specific-price"><span>آیتم ${index + 1} (خطا در وزن):</span> <strong>-- <span class="currency">تومان</span></strong></p>`;
+                    return; // Skip this item if weight is invalid
                 }
+
+                const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
+                let calculatedWageForThisItem = 0;
+
+                const wageType = wageTypeSelects[index].value; 
+
+                if (wageType === 'percent') {
+                    calculatedWageForThisItem = (rawGoldPriceForThisItem * actualWageValue) / 100;
+                } else { // wageType === 'amount'
+                    calculatedWageForThisItem = goldWeight * actualWageValue; 
+                }
+                
+                const calculatedSellerProfitForThisItem = (rawGoldPriceForThisItem * sellerProfitPercentage) / 100;
+                
+                const itemSubtotal = rawGoldPriceForThisItem + calculatedWageForThisItem + calculatedSellerProfitForThisItem;
+                
+                let taxForThisItem = 0;
+                if (enableTax) {
+                    taxForThisItem = (calculatedWageForThisItem + calculatedSellerProfitForThisItem) * 0.10;
+                    totalCalculatedTaxAmount += taxForThisItem;
+                }
+
+                const finalPriceForThisItem = itemSubtotal + taxForThisItem;
+                grandTotalFinalPrice += finalPriceForThisItem;
+
+                detailedResultsHTML += `
+                    <p class="item-specific-price">
+                        <span>آیتم ${index + 1} (قیمت + سود + اجرت):</span> 
+                        <strong>${formatCurrency(rawGoldPriceForThisItem + calculatedSellerProfitForThisItem + calculatedWageForThisItem)} <span class="currency">تومان</span></strong>
+                    </p>
+                `;
             });
 
-            if (hasInvalidInput) {
-                alert('لطفاً همه وزن‌ها و اجرت‌ها را به درستی و به صورت اعداد مثبت وارد کنید.');
-                return;
-            }
-
-            totalCalculatedSellerProfit = (totalRawGoldPrice * sellerProfitPercentage) / 100;
-
-            let totalCalculatedTaxAmount = 0;
-            if (enableTax) {
-                totalCalculatedTaxAmount = (totalCalculatedWage + totalCalculatedSellerProfit) * 0.10;
-            }
-
-            const totalFinalPrice = totalRawGoldPrice + totalCalculatedWage + totalCalculatedSellerProfit + totalCalculatedTaxAmount;
-
-            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(totalCalculatedSellerProfit);
+            detailedResultsDisplay.innerHTML = detailedResultsHTML;
             document.getElementById('calculatedTax').textContent = formatCurrency(totalCalculatedTaxAmount);
-            document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
+            document.getElementById('totalFinalPrice').textContent = formatCurrency(grandTotalFinalPrice);
         }
 
         function formatCurrency(num) {
