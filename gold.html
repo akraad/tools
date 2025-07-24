@@ -36,6 +36,7 @@
         }
 
         .calculator-container {
+            font-family: 'Vazirmatn', sans-serif; /* Ensure Vazirmatn throughout */
             background-color: var(--card-background);
             padding: 20px;
             border-radius: 12px; /* Slightly more rounded */
@@ -117,6 +118,16 @@
             height: var(--input-height);
             box-sizing: border-box;
         }
+        
+        /* Specific styling for seller profit select to make it smaller */
+        #sellerProfit {
+            width: 100px; /* Reduced width */
+            align-self: flex-start; /* Align to start of flex container */
+            padding: 8px 10px; /* Adjust padding */
+            font-size: 0.9em; /* Smaller font */
+            height: auto; /* Allow height to adjust based on padding */
+        }
+
 
         .input-group input[type="number"]::-webkit-outer-spin-button,
         .input-group input[type="number"]::-webkit-inner-spin-button {
@@ -165,19 +176,18 @@
 
         #items-container {
             margin-bottom: 25px; /* More space below items */
-            padding: 0; /* Remove padding as each item-row will be an info-box */
+            padding: 0; 
             border-radius: 10px;
-            background-color: transparent; /* No background for this container, children will have it */
-            border: none; /* No border for this container */
-            padding-top: 0; /* No extra padding here */
+            background-color: transparent; 
+            border: none; 
+            padding-top: 0; 
             position: relative;
         }
 
-        /* Adjust button position to be outside the items-container if needed */
         #add-item-global-button {
-            position: absolute; /* Adjusted to relative to calculator-container */
-            top: -18px; /* Adjust as needed */
-            left: -18px; /* Adjust as needed */
+            position: absolute; 
+            top: -18px; 
+            left: -18px; 
             background-color: var(--primary-color);
             color: #FFFFFF;
             border: none;
@@ -200,77 +210,65 @@
 
         .item-row {
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap */
-            align-items: flex-start;
-            gap: 10px; /* Spacing between weight and wage fields */
-            padding: 15px; /* Padding inside the info-box for each item */
+            flex-direction: column; /* Stack fields vertically within an item row */
+            padding: 15px; 
             border-radius: 10px;
-            background-color: #E9F5FF; /* Same background as other info-boxes */
-            border: 1px solid #cce5ff; /* Same border as other info-boxes */
-            margin-bottom: 15px; /* Space between each item row */
-            position: relative; /* For potential delete button positioning */
+            background-color: #E9F5FF; 
+            border: 1px solid #cce5ff; 
+            margin-bottom: 15px; 
+            position: relative; 
+            gap: 15px; /* Space between weight and wage sections */
         }
         .item-row:last-child {
-            margin-bottom: 0; /* No bottom margin for the last item */
+            margin-bottom: 0; 
         }
         
-        /* Inner container for weight and wage fields to act as a row */
-        .item-fields-wrapper {
-            display: flex;
-            flex-wrap: wrap; /* Allow fields to wrap on smaller screens */
-            gap: 15px; /* Gap between weight and wage sections */
-            width: 100%; /* Take full width of parent .item-row */
-        }
-
-        /* Styling for each weight/wage input wrapper */
-        .item-field-group { /* Renamed from input-wrapper for clarity */
+        /* Weight and Wage fields now also use the standard input-group styling */
+        .item-input-group { /* New class for individual input groups within item-row */
             display: flex;
             flex-direction: column;
-            flex: 1; /* Allow to grow to fill space */
-            min-width: calc(50% - 10px); /* Roughly half width, considering gap */
-            max-width: calc(50% - 10px); /* Max width for two columns */
         }
-
-        .item-field-group label {
+        .item-input-group label {
             margin-bottom: 8px;
             font-size: 0.9em;
             color: var(--text-color);
             font-weight: 500;
         }
-
-        .item-field-group input[type="number"] {
-            width: calc(100% - (2 * var(--input-padding))); /* Full width of its parent */
+        .item-input-group input[type="number"] {
+            width: calc(100% - (2 * var(--input-padding))); /* Adjusted for padding */
             padding: var(--input-padding);
-            height: var(--input-height);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-sizing: border-box; /* Important for width calculation with padding */
-            font-size: 1em;
-            text-align: right;
+            border-radius: 8px; 
+            background-color: var(--card-background);
+            color: var(--text-color);
+            font-size: 1em; 
             direction: ltr;
+            text-align: right;
+            height: var(--input-height);
+            box-sizing: border-box;
         }
-        
+
         /* Specific styling for wage input and type */
-        .item-field-group .wage-input-and-type {
+        .item-input-group .wage-input-and-type {
             display: flex;
             align-items: center;
             width: 100%;
         }
-        .item-field-group .wage-input-and-type input {
+        .item-input-group .wage-input-and-type input {
             flex-grow: 1;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            border-right: none; /* No border between input and select */
+            border-right: none; 
         }
-        .item-field-group .wage-type-select {
-            width: 50px; /* Slightly wider for better visual */
+        .item-input-group .wage-type-select {
+            width: 50px; 
             flex-shrink: 0;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            border-left: 1px solid var(--border-color); /* Add border to the left of select */
-            text-align: center; /* Centered text */
+            border-left: 1px solid var(--border-color); 
+            text-align: center; 
             padding: 0;
-            font-size: 0.9em; /* Smaller font for %/ت */
+            font-size: 0.9em; 
             height: var(--input-height);
             background-color: #f0f2f5;
             -webkit-appearance: none;
@@ -279,15 +277,15 @@
             cursor: pointer;
             outline: none;
             position: relative;
-            z-index: 1; /* Ensure select is above input if borders overlap */
+            z-index: 1; 
         }
 
         /* Delete button for each item */
         .delete-item-button {
             position: absolute;
-            top: 5px; /* Adjusted position */
-            left: 5px; /* Adjusted position */
-            background-color: #dc3545; /* Red color for delete */
+            top: 5px; 
+            left: 5px; 
+            background-color: #dc3545; 
             color: white;
             border: none;
             border-radius: 50%;
@@ -328,6 +326,7 @@
         }
 
         .result-section {
+            font-family: 'Vazirmatn', sans-serif; /* Ensure Vazirmatn in results */
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px dashed #ced4da;
@@ -378,10 +377,28 @@
             margin-left: 3px;
         }
         .result-section .item-specific-price {
-            font-size: 0.9em; /* Slightly smaller for individual item prices */
-            color: #555; /* A bit darker for readability */
-            margin-right: 5px; /* Indent for sub-items */
+            font-size: 0.95em; /* Slightly larger for individual item prices */
+            color: var(--text-color); /* A bit darker for readability */
+            margin-right: 0px; /* No indent for sub-items */
             margin-bottom: 3px;
+            display: flex;
+            justify-content: flex-end; /* Align to right */
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .item-specific-price .item-number-icon {
+            display: inline-flex;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.8em;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px; /* Space between icon and text */
+            flex-shrink: 0;
         }
 
         /* Mobile specific adjustments (for smaller screens) */
@@ -396,14 +413,10 @@
                 font-size: 0.85em;
             }
             .item-row {
-                flex-direction: column; /* Stack the field groups vertically */
-                gap: 12px; /* Space between stacked field groups */
+                /* On small screens, keep them stacked, but perhaps adjust gap */
+                gap: 12px;
             }
-            .item-fields-wrapper {
-                flex-direction: column; /* Stack the weight and wage inputs vertically */
-                gap: 12px; /* Space between stacked weight and wage inputs */
-            }
-            .item-field-group {
+            .item-input-group {
                 min-width: unset; /* Allow inputs to go smaller */
                 max-width: 100%; /* Take full width */
             }
@@ -432,16 +445,15 @@
         <div class="input-group info-box">
             <label for="sellerProfit">سود فروشنده:</label>
             <select id="sellerProfit" onchange="updateSellerProfitDisplay()">
-                <option value="1">یک درصد</option>
-                <option value="2">دو درصد</option>
-                <option value="3">سه درصد</option>
-                <option value="4">چهار درصد</option>
-                <option value="5">پنج درصد</option>
-                <option value="6">شش درصد</option>
-                <option selected value="7">هفت درصد</option>
+                <option value="1">1%</option>
+                <option value="2">2%</option>
+                <option value="3">3%</option>
+                <option value="4">4%</option>
+                <option value="5">5%</option>
+                <option value="6">6%</option>
+                <option selected value="7">7%</option>
             </select>
-            <div id="sellerProfitDisplay" class="text-in-words">هفت درصد</div>
-        </div>
+            </div>
 
 
         <div id="items-container">
@@ -465,7 +477,7 @@
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
         const sellerProfitSelect = document.getElementById('sellerProfit');
-        const sellerProfitDisplay = document.getElementById('sellerProfitDisplay');
+        // const sellerProfitDisplay = document.getElementById('sellerProfitDisplay'); // Removed as per request
         const detailedResultsDisplay = document.getElementById('detailedResults');
 
 
@@ -477,6 +489,16 @@
             '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
             '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
         };
+
+        const numberIcons = {
+            1: '①', 2: '②', 3: '③', 4: '④', 5: '⑤',
+            6: '⑥', 7: '⑦', 8: '⑧', 9: '⑨', 10: '⑩' // Add more if needed
+        };
+
+        function getNumberIcon(num) {
+            return numberIcons[num] || num; // Fallback to number if icon not found
+        }
+
 
         function toPersianDigits(str) {
             return String(str).replace(/[0-9]/g, char => latinToPersianDigits[char]);
@@ -539,22 +561,11 @@
             return result.join(" و ").trim();
         }
 
-        function convertPercentageToPersianWord(percentValue) {
-            switch (percentValue) {
-                case '1': return 'یک درصد';
-                case '2': return 'دو درصد';
-                case '3': return 'سه درصد';
-                case '4': return 'چهار درصد';
-                case '5': return 'پنج درصد';
-                case '6': return 'شش درصد';
-                case '7': return 'هفت درصد';
-                default: return '';
-            }
-        }
-
+        // Removed convertPercentageToPersianWord as sellerProfitDisplay is removed
         function updateSellerProfitDisplay() {
-            const selectedValue = sellerProfitSelect.value;
-            sellerProfitDisplay.textContent = convertPercentageToPersianWord(selectedValue);
+            // No longer updating a display div for words, only the select value
+            // const selectedValue = sellerProfitSelect.value;
+            // sellerProfitDisplay.textContent = convertPercentageToPersianWord(selectedValue);
         }
 
         function addItemRow() {
@@ -567,20 +578,18 @@
 
             itemRowDiv.innerHTML = `
                 <button type="button" class="delete-item-button" onclick="deleteItemRow('${itemRowDiv.id}')">X</button>
-                <div class="item-fields-wrapper">
-                    <div class="item-field-group">
-                        <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
-                        <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
-                    </div>
-                    <div class="item-field-group">
-                        <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
-                        <div class="wage-input-and-type">
-                            <input type="number" id="wage-${itemCounter}" class="wage-input" min="0">
-                            <select id="wageType-${itemCounter}" class="wage-type-select">
-                                <option value="percent">%</option>
-                                <option value="amount">ت</option>
-                            </select>
-                        </div>
+                <div class="item-input-group">
+                    <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
+                </div>
+                <div class="item-input-group">
+                    <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
+                    <div class="wage-input-and-type">
+                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0">
+                        <select id="wageType-${itemCounter}" class="wage-type-select">
+                            <option value="percent">%</option>
+                            <option value="amount">ت</option>
+                        </select>
                     </div>
                 </div>
             `;
@@ -663,7 +672,6 @@
             const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
             if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
-                // If gold price is invalid, clear results and return
                 detailedResultsDisplay.innerHTML = '';
                 document.getElementById('calculatedTax').textContent = formatCurrency(0);
                 document.getElementById('totalFinalPrice').textContent = formatCurrency(0);
@@ -675,7 +683,6 @@
             const wageTypeSelects = document.querySelectorAll('.wage-type-select');
 
             if (goldWeightInputs.length === 0) {
-                // If no items, clear results and return
                 detailedResultsDisplay.innerHTML = '';
                 document.getElementById('calculatedTax').textContent = formatCurrency(0);
                 document.getElementById('totalFinalPrice').textContent = formatCurrency(0);
@@ -694,9 +701,8 @@
                 const actualWageValue = isNaN(wageValue) ? 0 : wageValue;
 
                 if (isNaN(goldWeight) || goldWeight <= 0) {
-                    // Skip invalid items or show a specific warning later if needed
-                    detailedResultsHTML += `<p class="item-specific-price"><span>آیتم ${index + 1} (خطا در وزن):</span> <strong>-- <span class="currency">تومان</span></strong></p>`;
-                    return; // Skip this item if weight is invalid
+                    detailedResultsHTML += `<p class="item-specific-price"><span class="item-number-icon">${getNumberIcon(index + 1)}</span> <strong>-- <span class="currency">تومان</span></strong></p>`;
+                    return; // Skip this item if weight is invalid or zero
                 }
 
                 const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
@@ -725,8 +731,8 @@
 
                 detailedResultsHTML += `
                     <p class="item-specific-price">
-                        <span>آیتم ${index + 1} (قیمت + سود + اجرت):</span> 
-                        <strong>${formatCurrency(rawGoldPriceForThisItem + calculatedSellerProfitForThisItem + calculatedWageForThisItem)} <span class="currency">تومان</span></strong>
+                        <span class="item-number-icon">${getNumberIcon(index + 1)}</span> 
+                        <strong>${formatCurrency(itemSubtotal)} <span class="currency">تومان</span></strong>
                     </p>
                 `;
             });
