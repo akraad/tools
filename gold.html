@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه‌گر قیمت طلا</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /* General Body Styling - Light Theme */
         body {
@@ -39,20 +40,28 @@
             font-weight: 700; /* Bold title */
         }
 
-        /* Back Button */
-        .back-button {
+        /* Back Icon Button */
+        .back-icon {
             position: absolute;
             top: 25px;
             left: 25px; /* Position to the left */
-            font-size: 0.9em;
-            color: #6C757D; /* Muted gray for the link */
+            font-size: 24px; /* Icon size */
+            color: #6C757D; /* Muted gray for the icon */
             text-decoration: none;
-            transition: color 0.2s ease-in-out;
-            direction: rtl; /* Ensure RTL for Persian text */
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            cursor: pointer;
+            display: flex; /* To center icon if needed */
+            align-items: center;
+            justify-content: center;
+            width: 40px; /* Make it a clickable area */
+            height: 40px;
+            border-radius: 50%; /* Make it circular */
         }
 
-        .back-button:hover {
+        .back-icon:hover {
             color: #333; /* Darker on hover */
+            transform: scale(1.1); /* Slightly enlarge on hover */
+            background-color: rgba(0, 0, 0, 0.05); /* Subtle background on hover */
         }
 
         /* Calculator Container - Modern Minimal */
@@ -199,7 +208,9 @@
 <body>
 
     <div class="header-container">
-        <a href="#" class="back-button" onclick="alert('اینجا لینک به صفحه اصلی شما قرار می‌گیرد.'); return false;">&lt; بازگشت به صفحه اصلی</a>
+        <a href="index.html" class="back-icon" title="بازگشت به صفحه اصلی">
+            <i class="material-icons">arrow_back</i>
+        </a>
         <h1 class="header-text">محاسبه‌گر قیمت طلا</h1>
     </div>
 
