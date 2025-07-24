@@ -67,24 +67,24 @@
         /* Calculator Container - Modern Minimal */
         .calculator-container {
             background-color: #FFFFFF; /* Pure white background for the card */
-            padding: 35px; /* More padding inside the card */
+            padding: 30px; /* Slightly reduced padding */
             border-radius: 12px; /* More rounded corners */
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Pronounced but soft shadow */
             width: 90%;
-            max-width: 480px; /* Comfortable width */
+            max-width: 450px; /* Slightly narrower for more minimalism */
             margin-bottom: 60px;
             border: 1px solid #E0E0E0; /* Subtle border for definition */
         }
 
         .input-group {
-            margin-bottom: 25px; /* More space between input groups */
+            margin-bottom: 20px; /* Reduced space between input groups */
             display: flex;
             flex-direction: column;
         }
 
         .input-group label {
-            margin-bottom: 10px; /* More space between label and input */
-            font-size: 1em;
+            margin-bottom: 8px; /* Reduced space between label and input */
+            font-size: 0.95em; /* Slightly smaller label font */
             color: #555; /* Slightly darker label color */
             display: block;
             font-weight: 500;
@@ -92,13 +92,13 @@
 
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 24px); /* Adjust for padding and border */
-            padding: 12px; /* Generous padding for inputs */
+            width: calc(100% - 20px); /* Adjust for padding and border */
+            padding: 10px; /* Reduced padding for smaller inputs */
             border: 1px solid #D0D0D0; /* Light border */
-            border-radius: 8px; /* Rounded input corners */
+            border-radius: 6px; /* Slightly less rounded input corners */
             background-color: #FDFDFD; /* Off-white for input background */
             color: #333; /* Dark text for input values */
-            font-size: 1.1em;
+            font-size: 1em; /* Reduced input font size */
             direction: ltr;
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -111,6 +111,13 @@
             margin: 0;
         }
 
+        /* Placeholder specific styling */
+        .input-group input::placeholder {
+            font-family: 'Vazirmatn', sans-serif; /* Use Vazirmatn for placeholders */
+            color: #A0A0A0; /* Lighter color for placeholders */
+            font-weight: 400; /* Normal weight for placeholders */
+        }
+
         .input-group input[type="number"]:focus,
         .input-group select:focus {
             outline: none;
@@ -121,35 +128,35 @@
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px; /* Reduced margin */
             justify-content: flex-end;
         }
 
         .checkbox-group label {
-            margin-right: 12px; /* More space for checkbox label */
-            font-size: 1em;
+            margin-right: 10px; /* Reduced space for checkbox label */
+            font-size: 0.95em; /* Match label font size */
             cursor: pointer;
             color: #555;
             font-weight: 500;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: 20px; /* Slightly larger checkbox */
-            height: 20px;
+            width: 18px; /* Slightly smaller checkbox */
+            height: 18px;
             accent-color: #00BFA5; /* Teal for checked state */
             cursor: pointer;
             border: 1px solid #CCC; /* Lighter border for checkbox */
-            border-radius: 4px; /* Rounded checkbox */
+            border-radius: 3px; /* Slightly less rounded checkbox */
         }
 
         button {
             width: 100%;
-            padding: 16px 20px; /* Generous button padding */
+            padding: 14px 20px; /* Slightly reduced button padding */
             background-color: #4CAF50; /* Green for action */
             color: #FFFFFF; /* White text on button */
             border: none;
-            border-radius: 8px; /* Rounded button */
-            font-size: 1.2em;
+            border-radius: 6px; /* Slightly less rounded button */
+            font-size: 1.1em; /* Reduced button font size */
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
@@ -163,45 +170,39 @@
         }
 
         .result-section {
-            margin-top: 40px; /* More space above results */
-            padding-top: 30px;
+            margin-top: 30px; /* Reduced space above results */
+            padding-top: 20px;
             border-top: 1px dashed #E0E0E0; /* Lighter dashed separator */
             text-align: center;
-            line-height: 1.8; /* More space between lines of results */
+            line-height: 1.7; /* Slightly reduced line height */
         }
 
         .result-section p {
-            font-size: 1em;
-            margin-bottom: 5px; /* Smaller margin for compact results */
+            font-size: 0.95em; /* Slightly smaller result text */
+            margin-bottom: 4px; /* Smaller margin for compact results */
             color: #555;
             display: flex;
             justify-content: space-between; /* Space out label and value */
             align-items: baseline;
-            padding: 0 10px; /* Padding for result lines */
+            padding: 0 8px; /* Reduced padding for result lines */
         }
 
         .result-section strong {
             color: #4263EB; /* Modern blue accent for values */
-            font-size: 1.2em;
+            font-size: 1.15em; /* Slightly smaller value font */
             font-weight: 700;
             margin-right: 5px; /* Space before "تومان" */
         }
 
         .result-section span.currency {
             color: #666; /* Slightly muted color for "تومان" */
-            font-size: 0.9em;
+            font-size: 0.85em; /* Smaller currency text */
             margin-left: 5px; /* Space after value */
         }
 
         /* Footer Styling */
         .footer {
-            margin-top: auto;
-            font-size: 0.8em;
-            color: #888; /* Muted gray for copyright */
-            padding: 25px;
-            width: 100%;
-            text-align: center;
-            direction: ltr;
+            /* This section will be removed */
         }
     </style>
 </head>
@@ -259,12 +260,8 @@
         </div>
     </div>
 
-    <div class="footer">
-        <p>&copy; <span id="current-year"></span> All rights reserved. Please respect copyright.</p>
-    </div>
-
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        // No need for current year as footer is removed
 
         function calculateGoldPrice() {
             const goldPricePerGram = parseFloat(document.getElementById('goldPrice').value);
