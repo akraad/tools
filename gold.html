@@ -49,7 +49,7 @@
             background-color: #F8F9FA;
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid #D1D5DB;
+            border: 1px solid #D1D5DB; /* Lighter border for consistency */
             margin-bottom: 20px;
         }
         .gold-price-in-words {
@@ -152,22 +152,22 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 0;
-            flex: 1 1 48%; /* Flex-grow, flex-shrink, flex-basis: Distributes space, allows shrinking */
-            min-width: 120px; /* Minimum width for inputs before wrapping */
+            flex: 1; /* Allow to grow and shrink */
+            min-width: 90px; /* Reduced min-width for weight */
+            max-width: 120px; /* Added max-width for weight */
         }
         .item-row .input-wrapper:first-child {
             margin-left: 0;
         }
-        .item-row .input-wrapper:nth-child(2) { /* Wage input wrapper */
-            margin-right: 5px; /* Space between weight and wage group */
-        }
-
+        
         /* Specific styles for wage input to accommodate select */
         .item-row .wage-input-wrapper {
             display: flex;
             flex-direction: column;
-            flex: 1 1 48%; /* Flex properties for wage wrapper */
-            min-width: 120px;
+            flex: 1; /* Allow to grow and shrink */
+            min-width: 120px; /* Increased min-width to accommodate select and input */
+            max-width: 170px; /* Increased max-width for wage */
+            margin-right: 5px; /* Space between weight and wage group */
         }
         .item-row .wage-input-and-type {
             display: flex;
@@ -309,6 +309,7 @@
             .item-row .wage-input-wrapper {
                 flex-basis: 100%; /* Stack inputs vertically */
                 margin-right: 0; /* Remove horizontal margin */
+                max-width: none; /* Remove max-width when stacked */
             }
             .item-row .input-wrapper:first-child {
                 margin-bottom: 10px; /* Add some space between stacked inputs */
@@ -390,7 +391,7 @@
         function convertNumberToWords(num) {
             if (num === 0) return "صفر";
             let s = String(num);
-            if (s.length > 15) return "عدد بسیار بزرگ";
+            if (s.length > 15) return "عدد بسیار بزرگ"; // Limit words to prevent extremely long strings
 
             let parts = [];
             for (let i = 0; i < s.length; i += 3) {
@@ -495,8 +496,12 @@
             let latinValue = toLatinDigits(inputValue);
             latinValue = latinValue.replace(/[^0-9]/g, '');
 
-            if (latinValue.length > 7) {
-                latinValue = latinValue.substring(0, 7);
+            // Removed maxlength restriction for goldPrice, but keeping 7-digit check for word conversion
+            if (latinValue.length > 7) { 
+                // This check is primarily for the 'convertNumberToWords' function, 
+                // if you truly want no limit, remove this 'if' block entirely.
+                // However, for practical word conversion, a soft limit is usually good.
+                latinValue = latinValue.substring(0, 7); 
             }
             
             let formattedValue = latinValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -543,8 +548,10 @@
             let hasInvalidInput = false;
 
             goldWeightInputs.forEach((weightInput, index) => {
-                const goldWeight = parseFloat(toLatinDigits(weightInput.value));
-                const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)) || 0;
+                // Convert to Latin for calculation, allowing decimal point for weight
+                const goldWeight = parseFloat(toLatinDigits(weightInput.value)); 
+                // Convert to Latin for calculation, integer for wage
+                const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)) || 0; 
                 const wageType = wageTypeSelects[index].value;
 
                 if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wageValue) || wageValue < 0) {
