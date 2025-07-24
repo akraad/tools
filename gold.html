@@ -6,111 +6,112 @@
     <title>محاسبه‌گر طلای نوین</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Variables for easy customization */
         :root {
-            --primary-color: #007bff; /* Blue for main actions */
-            --secondary-color: #28a745; /* Green for calculate button */
-            --background-color: #F8F9FA; /* Light background */
-            --card-background: #FFFFFF; /* Card white background */
-            --text-color: #343a40; /* Darker text for readability */
-            --light-text: #6c757d; /* Lighter text for labels/hints */
-            --border-color: #dee2e6; /* Light gray border */
-            --shadow-light: rgba(0, 0, 0, 0.05);
-            --shadow-medium: rgba(0, 0, 0, 0.1);
-            --focus-glow: rgba(0, 123, 255, 0.25);
-            --input-height: 44px; /* Consistent input height */
-            --input-padding: 10px; /* Consistent input padding */
+            --primary-color: #0d6efd; /* A bit darker blue for better contrast */
+            --secondary-color: #198754; /* A bit darker green */
+            --background-color: #f0f2f5; /* Lighter background */
+            --card-background: #FFFFFF;
+            --text-color: #212529; /* Darker text */
+            --light-text: #6c757d;
+            --border-color: #e9ecef; /* Lighter border */
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --focus-glow: rgba(13, 110, 253, 0.25);
+            --input-height: 48px; /* Slightly taller inputs */
+            --input-padding: 12px;
+            --border-radius-main: 12px;
+            --border-radius-sm: 8px;
         }
 
+        /* Base styles */
         body {
             font-family: 'Vazirmatn', sans-serif;
             margin: 0;
-            padding: 15px; /* Reduced padding for mobile */
+            padding: 20px;
             background-color: var(--background-color);
             color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
             min-height: 100vh;
             box-sizing: border-box;
             line-height: 1.6;
         }
 
+        /* Calculator Container */
         .calculator-container {
-            font-family: 'Vazirmatn', sans-serif; /* Ensure Vazirmatn throughout */
             background-color: var(--card-background);
-            padding: 20px;
-            border-radius: 12px; /* Slightly more rounded */
-            box-shadow: 0 6px 20px var(--shadow-medium); /* Deeper shadow */
+            padding: 30px; /* More padding */
+            border-radius: var(--border-radius-main);
+            box-shadow: 0 10px 30px var(--shadow-medium); /* Stronger shadow */
             width: 100%;
-            max-width: 380px; /* Optimized width for mobile */
-            margin-top: 25px;
+            max-width: 400px; /* Slightly wider */
             position: relative;
             border: 1px solid var(--border-color);
-            overflow: hidden; /* Ensures borders/shadows are contained */
+            overflow: hidden;
+            direction: rtl; /* Ensure RTL for all content */
         }
 
+        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         .header h2 {
-            font-size: 1.6em;
+            font-size: 1.8em; /* Larger title */
             color: var(--primary-color);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
         .header p {
-            font-size: 0.9em;
+            font-size: 1em;
             color: var(--light-text);
             font-weight: 400;
         }
 
+        /* Input Groups (Main sections like Gold Price, Seller Profit) */
         .input-group {
-            margin-bottom: 18px; /* Slightly more space */
+            margin-bottom: 25px;
             display: flex;
             flex-direction: column;
+            background-color: #f8f9fa; /* Slightly off-white background for input groups */
+            padding: 18px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid #e0e4e8;
         }
-
         .input-group label {
-            margin-bottom: 8px; /* More space below label */
-            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-size: 0.95em;
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600; /* Bolder labels */
         }
 
-        /* Generic box styling for major input sections */
-        .info-box {
-            background-color: #E9F5FF; /* Lighter blue background for these sections */
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cce5ff;
-            margin-bottom: 25px;
-        }
-
-        .text-in-words { /* Renamed for general use */
-            font-size: 0.88em;
+        /* Text in words display */
+        .text-in-words {
+            font-size: 0.9em;
             color: var(--light-text);
-            margin-top: 10px;
+            margin-top: 12px;
             text-align: center;
             font-weight: 500;
-            background-color: #f0f8ff;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px dashed #bee5eb;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: var(--border-radius-sm);
+            border: 1px dashed #ced4da;
         }
 
-        /* Unified Input/Select Styling for consistent height and appearance */
-        .input-group input[type="text"],
-        .input-group input[type="number"],
-        .input-group select {
-            width: calc(100% - (2 * var(--input-padding))); /* Adjusted for padding */
+        /* Unified Input/Select Styling */
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%; /* Full width within its parent */
             padding: var(--input-padding);
             border: 1px solid var(--border-color);
-            border-radius: 8px; /* More rounded */
+            border-radius: var(--border-radius-sm);
             background-color: var(--card-background);
             color: var(--text-color);
-            font-size: 1em; /* Slightly larger font */
-            direction: ltr;
+            font-size: 1.05em;
+            direction: ltr; /* Ensure LTR for numbers */
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
@@ -118,113 +119,113 @@
             height: var(--input-height);
             box-sizing: border-box;
         }
-        
-        /* Specific styling for seller profit select to make it smaller */
-        #sellerProfit {
-            width: 100px; /* Reduced width */
-            align-self: flex-start; /* Align to start of flex container */
-            padding: 8px 10px; /* Adjust padding */
-            font-size: 0.9em; /* Smaller font */
-            height: auto; /* Allow height to adjust based on padding */
-        }
 
-
-        .input-group input[type="number"]::-webkit-outer-spin-button,
-        .input-group input[type="number"]::-webkit-inner-spin-button {
+        /* Remove spin buttons from number inputs */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        .input-group input::placeholder { /* Placeholder styling removed as per request */
-            /* font-family: 'Vazirmatn', sans-serif;
-            color: #B0B0B0;
-            font-weight: 300; */
-        }
-
-        .input-group input[type="text"]:focus,
-        .input-group input[type="number"]:focus,
-        .input-group select:focus {
+        /* Focus styles */
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px var(--focus-glow); /* More prominent focus */
+            box-shadow: 0 0 0 4px var(--focus-glow); /* Stronger focus glow */
         }
 
+        /* Checkbox Group */
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            justify-content: flex-end; /* Align to right for symmetry with other inputs */
-            padding-right: 5px; /* Small padding for visual alignment */
+            justify-content: flex-end;
+            margin-bottom: 25px;
+            padding-right: 5px;
         }
-
         .checkbox-group label {
-            margin-right: 10px; /* More space */
-            font-size: 0.9em;
+            margin-right: 12px;
+            font-size: 0.95em;
             cursor: pointer;
             color: var(--text-color);
             font-weight: 500;
         }
-
         .checkbox-group input[type="checkbox"] {
-            width: 18px; /* Slightly larger checkbox */
-            height: 18px;
+            width: 20px;
+            height: 20px;
             accent-color: var(--secondary-color);
             cursor: pointer;
             border: 1px solid #CCC;
-            border-radius: 4px; /* Rounded checkbox */
+            border-radius: 4px;
         }
 
+        /* Seller Profit specific styling (no text in words, smaller select) */
+        #sellerProfit {
+            width: 100px; /* Fixed smaller width */
+            padding: 8px 12px; /* Adjusted padding */
+            height: auto; /* Auto height for padding */
+            font-size: 1em;
+            text-align: center;
+        }
+        /* Remove its text-in-words display margin-top if it exists */
+        #sellerProfit + .text-in-words {
+            margin-top: 0; /* Remove extra space if text-in-words was conceptually below it */
+            display: none; /* Explicitly hide if still there */
+        }
+
+        /* Items Container (for Weight and Wage rows) */
         #items-container {
-            margin-bottom: 25px; /* More space below items */
-            padding: 0; 
-            border-radius: 10px;
-            background-color: transparent; 
-            border: none; 
-            padding-top: 0; 
+            margin-bottom: 25px;
+            padding: 0;
+            border-radius: var(--border-radius-sm);
+            background-color: transparent;
+            border: none;
             position: relative;
         }
 
+        /* Add Item Button (global position) */
         #add-item-global-button {
-            position: absolute; 
-            top: -18px; 
-            left: -18px; 
+            position: absolute;
+            top: -20px; /* Move slightly higher */
+            left: -20px; /* Move slightly more left */
             background-color: var(--primary-color);
             color: #FFFFFF;
             border: none;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 28px;
+            width: 40px; /* Larger button */
+            height: 40px;
+            font-size: 32px; /* Larger icon */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 4px 12px var(--shadow-medium);
+            box-shadow: 0 5px 15px var(--shadow-medium);
             z-index: 10;
         }
         #add-item-global-button:hover {
             background-color: #0056b3;
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg); /* Add slight rotation */
         }
 
+        /* Each Item Row (Weight and Wage) */
         .item-row {
             display: flex;
-            flex-direction: column; /* Stack fields vertically within an item row */
-            padding: 15px; 
-            border-radius: 10px;
-            background-color: #E9F5FF; 
-            border: 1px solid #cce5ff; 
-            margin-bottom: 15px; 
-            position: relative; 
-            gap: 15px; /* Space between weight and wage sections */
+            flex-direction: column; /* Stack fields within an item row */
+            padding: 20px; /* More padding */
+            border-radius: var(--border-radius-sm);
+            background-color: #f8f9fa; /* Consistent background with main input groups */
+            border: 1px solid #e0e4e8; /* Consistent border */
+            margin-bottom: 18px; /* Space between item rows */
+            position: relative;
+            gap: 15px; /* Space between weight and wage input groups */
         }
         .item-row:last-child {
-            margin-bottom: 0; 
+            margin-bottom: 0;
         }
         
-        /* Weight and Wage fields now also use the standard input-group styling */
-        .item-input-group { /* New class for individual input groups within item-row */
+        /* Input Groups within Item Row (Weight and Wage) */
+        .item-input-group {
             display: flex;
             flex-direction: column;
         }
@@ -234,20 +235,8 @@
             color: var(--text-color);
             font-weight: 500;
         }
-        .item-input-group input[type="number"] {
-            width: calc(100% - (2 * var(--input-padding))); /* Adjusted for padding */
-            padding: var(--input-padding);
-            border: 1px solid var(--border-color);
-            border-radius: 8px; 
-            background-color: var(--card-background);
-            color: var(--text-color);
-            font-size: 1em; 
-            direction: ltr;
-            text-align: right;
-            height: var(--input-height);
-            box-sizing: border-box;
-        }
-
+        /* Input styling within item-input-group is covered by general input rules */
+        
         /* Specific styling for wage input and type */
         .item-input-group .wage-input-and-type {
             display: flex;
@@ -261,16 +250,16 @@
             border-right: none; 
         }
         .item-input-group .wage-type-select {
-            width: 50px; 
+            width: 60px; /* Slightly wider for better interaction */
             flex-shrink: 0;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
             border-left: 1px solid var(--border-color); 
             text-align: center; 
             padding: 0;
-            font-size: 0.9em; 
+            font-size: 1em; 
             height: var(--input-height);
-            background-color: #f0f2f5;
+            background-color: #e9ecef; /* Slightly darker background */
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -283,142 +272,175 @@
         /* Delete button for each item */
         .delete-item-button {
             position: absolute;
-            top: 5px; 
-            left: 5px; 
+            top: 8px; /* More padding from top */
+            left: 8px; /* More padding from left */
             background-color: #dc3545; 
             color: white;
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 16px;
+            width: 28px; /* Slightly larger */
+            height: 28px;
+            font-size: 18px; /* Larger icon */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 5;
-            transition: background-color 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
         }
         .delete-item-button:hover {
             background-color: #c82333;
+            transform: scale(1.1);
         }
 
+        /* Calculate Button */
         button.calculate-button {
             width: 100%;
-            padding: 12px 15px;
+            padding: 15px; /* More padding */
             background-color: var(--secondary-color);
             color: #FFFFFF;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-            margin-top: 25px;
-        }
-
-        button.calculate-button:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(40, 167, 69, 0.4);
-        }
-
-        .result-section {
-            font-family: 'Vazirmatn', sans-serif; /* Ensure Vazirmatn in results */
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed #ced4da;
-            text-align: center;
-            line-height: 1.5;
-            background-color: #e9ecef;
-            border-radius: 10px;
-            padding: 15px 20px;
-            box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
-        }
-
-        .result-section h3 {
-            font-size: 1.2em;
-            color: var(--primary-color);
-            margin-bottom: 15px;
+            border-radius: var(--border-radius-sm);
+            font-size: 1.2em; /* Larger font */
             font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+            margin-top: 30px;
+        }
+        button.calculate-button:hover {
+            background-color: #157347;
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.4);
+        }
+
+        /* Result Section */
+        .result-section {
+            margin-top: 35px;
+            padding: 25px; /* More padding */
+            border-top: 1px dashed #ced4da; /* Consistent border */
+            text-align: right; /* Align text to right for RTL */
+            background-color: #e0f2f7; /* Lighter blue/cyan for results */
+            border-radius: var(--border-radius-sm);
+            box-shadow: inset 0 1px 6px rgba(0,0,0,0.08); /* Softer inner shadow */
+        }
+        .result-section h3 {
+            font-size: 1.3em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
         }
 
         .result-section p {
-            font-size: 0.95em;
-            margin-bottom: 5px;
+            font-size: 1em;
+            margin-bottom: 8px;
             color: var(--text-color);
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 0 8px;
+            padding: 0 5px; /* Slight padding */
+            line-height: 1.5;
         }
         .result-section p.total-result {
-            font-size: 1.1em;
+            font-size: 1.2em; /* Larger for final total */
             font-weight: 700;
-            color: var(--text-color);
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #cce5ff;
             color: var(--primary-color);
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #a7d9ee; /* Stronger border for total */
         }
 
         .result-section strong {
             color: var(--primary-color);
-            font-size: 1.1em;
+            font-size: 1.15em; /* Larger strong values */
             font-weight: 700;
-            margin-right: 3px;
+            margin-right: 5px;
+            white-space: nowrap; /* Prevent numbers from wrapping */
         }
-
         .result-section span.currency {
             color: var(--light-text);
-            font-size: 0.8em;
-            margin-left: 3px;
+            font-size: 0.85em;
+            margin-left: 5px;
         }
+
         .result-section .item-specific-price {
-            font-size: 0.95em; /* Slightly larger for individual item prices */
-            color: var(--text-color); /* A bit darker for readability */
-            margin-right: 0px; /* No indent for sub-items */
-            margin-bottom: 3px;
+            font-size: 0.98em; /* Slightly adjusted */
+            color: var(--text-color);
+            margin-bottom: 5px;
             display: flex;
-            justify-content: flex-end; /* Align to right */
+            justify-content: space-between; /* Space between icon and value */
             align-items: center;
-            padding: 0 8px;
+            padding: 0 5px;
         }
 
         .item-specific-price .item-number-icon {
             display: inline-flex;
-            width: 22px;
-            height: 22px;
+            width: 26px; /* Larger icon */
+            height: 26px;
             border-radius: 50%;
             background-color: var(--primary-color);
             color: white;
-            font-size: 0.8em;
+            font-size: 0.9em; /* Adjusted icon font size */
             align-items: center;
             justify-content: center;
-            margin-left: 8px; /* Space between icon and text */
+            margin-left: 10px; /* Space between icon and text */
             flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* Mobile specific adjustments (for smaller screens) */
-        @media (max-width: 400px) { 
+        /* Responsive adjustments */
+        @media (max-width: 450px) { 
             .calculator-container {
-                padding: 15px;
+                padding: 20px 15px; /* Adjust padding for smaller screens */
             }
             .header h2 {
-                font-size: 1.4em;
+                font-size: 1.5em;
             }
             .header p {
+                font-size: 0.9em;
+            }
+            .input-group, .item-row {
+                padding: 15px;
+            }
+            .input-group label, .item-input-group label {
+                font-size: 0.88em;
+            }
+            input, select {
+                font-size: 0.95em;
+                height: 44px; /* Slightly smaller height */
+                padding: 10px;
+            }
+            .item-specific-price .item-number-icon {
+                width: 24px;
+                height: 24px;
                 font-size: 0.85em;
+                margin-left: 8px;
             }
-            .item-row {
-                /* On small screens, keep them stacked, but perhaps adjust gap */
-                gap: 12px;
+            button.calculate-button {
+                font-size: 1em;
+                padding: 12px;
             }
-            .item-input-group {
-                min-width: unset; /* Allow inputs to go smaller */
-                max-width: 100%; /* Take full width */
+            .result-section p, .result-section .item-specific-price {
+                font-size: 0.9em;
+            }
+            .result-section strong {
+                font-size: 1em;
+            }
+            #add-item-global-button {
+                width: 36px;
+                height: 36px;
+                font-size: 28px;
+                top: -18px;
+                left: -18px;
+            }
+            .delete-item-button {
+                width: 24px;
+                height: 24px;
+                font-size: 16px;
+                top: 5px;
+                left: 5px;
             }
         }
     </style>
@@ -436,15 +458,15 @@
             <input type="checkbox" id="enableTax" checked>
         </div>
 
-        <div class="input-group info-box">
+        <div class="input-group">
             <label for="goldPrice">مبلغ قیمت هر گرم طلا:</label>
-            <input type="text" id="goldPrice" inputmode="numeric" oninput="formatGoldPrice(this.value)">
+            <input type="text" id="goldPrice" inputmode="decimal" oninput="formatGoldPrice(this.value, 7, 2)">
             <div id="goldPriceInWords" class="text-in-words">صفر تومان</div>
         </div>
 
-        <div class="input-group info-box">
+        <div class="input-group">
             <label for="sellerProfit">سود فروشنده:</label>
-            <select id="sellerProfit" onchange="updateSellerProfitDisplay()">
+            <select id="sellerProfit">
                 <option value="1">1%</option>
                 <option value="2">2%</option>
                 <option value="3">3%</option>
@@ -453,13 +475,11 @@
                 <option value="6">6%</option>
                 <option selected value="7">7%</option>
             </select>
-            </div>
-
+        </div>
 
         <div id="items-container">
             </div>
         <button type="button" id="add-item-global-button" onclick="addItemRow()">+</button>
-
 
         <button type="button" class="calculate-button" onclick="calculateGoldPrice()">محاسبه قیمت نهایی</button>
 
@@ -467,8 +487,8 @@
             <h3>نتایج محاسبه:</h3>
             <div id="detailedResults">
                 </div>
-            <p><span>جمع کل مالیات:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
-            <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>جمع کل مالیات:</span> <strong><span id="calculatedTax">۰</span> <span class="currency">تومان</span></strong></p>
+            <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">۰</span> <span class="currency">تومان</span></strong></p>
         </div>
     </div>
 
@@ -477,28 +497,11 @@
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
         const sellerProfitSelect = document.getElementById('sellerProfit');
-        // const sellerProfitDisplay = document.getElementById('sellerProfitDisplay'); // Removed as per request
         const detailedResultsDisplay = document.getElementById('detailedResults');
 
-
-        const latinToPersianDigits = {
-            '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴',
-            '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'
-        };
-        const persianToLatinDigits = {
-            '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
-            '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
-        };
-
-        const numberIcons = {
-            1: '①', 2: '②', 3: '③', 4: '④', 5: '⑤',
-            6: '⑥', 7: '⑦', 8: '⑧', 9: '⑨', 10: '⑩' // Add more if needed
-        };
-
-        function getNumberIcon(num) {
-            return numberIcons[num] || num; // Fallback to number if icon not found
-        }
-
+        // Persian digit mapping
+        const latinToPersianDigits = { '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴', '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹' };
+        const persianToLatinDigits = { '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9' };
 
         function toPersianDigits(str) {
             return String(str).replace(/[0-9]/g, char => latinToPersianDigits[char]);
@@ -508,6 +511,7 @@
             return String(str).replace(/[۰-۹]/g, char => persianToLatinDigits[char]);
         }
 
+        // Number to word conversion (unchanged, as it's efficient)
         const numToWord = {
             0: "صفر", 1: "یک", 2: "دو", 3: "سه", 4: "چهار", 5: "پنج", 6: "شش", 7: "هفت", 8: "هشت", 9: "نه",
             10: "ده", 11: "یازده", 12: "دوازده", 13: "سیزده", 14: "چهارده", 15: "پانزده", 16: "شانزده", 17: "هفده", 18: "هجده", 19: "نوزده",
@@ -561,13 +565,51 @@
             return result.join(" و ").trim();
         }
 
-        // Removed convertPercentageToPersianWord as sellerProfitDisplay is removed
-        function updateSellerProfitDisplay() {
-            // No longer updating a display div for words, only the select value
-            // const selectedValue = sellerProfitSelect.value;
-            // sellerProfitDisplay.textContent = convertPercentageToPersianWord(selectedValue);
+        // Circular number icons
+        const numberIcons = { 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹', 10: '۱۰' };
+        function getNumberIcon(num) {
+            return numberIcons[num] || toPersianDigits(num.toString()); // Fallback to Persian digit if icon not found
         }
 
+        // Format gold price input (limit digits, allow decimals, Persian digits)
+        function formatGoldPrice(inputValue, maxBeforeDecimal = 7, maxAfterDecimal = 2) {
+            let latinValue = toLatinDigits(inputValue);
+            let parts = latinValue.split('.');
+            let integerPart = parts[0].replace(/[^0-9]/g, '');
+            let decimalPart = parts[1] ? parts[1].replace(/[^0-9]/g, '') : '';
+
+            // Limit integer part
+            if (integerPart.length > maxBeforeDecimal) {
+                integerPart = integerPart.substring(0, maxBeforeDecimal);
+            }
+
+            // Limit decimal part
+            if (decimalPart.length > maxAfterDecimal) {
+                decimalPart = decimalPart.substring(0, maxAfterDecimal);
+            }
+
+            // Add commas to integer part
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            let formattedValue = integerPart;
+            if (parts.length > 1) { // If there was a decimal point
+                formattedValue += '.' + decimalPart;
+            } else if (inputValue.includes('.')) { // If user just typed '.'
+                 formattedValue += '.';
+            }
+            
+            goldPriceInput.value = toPersianDigits(formattedValue);
+            updateGoldPriceInWords();
+        }
+
+        // Update gold price in words
+        function updateGoldPriceInWords() {
+            const rawValue = toLatinDigits(goldPriceInput.value).replace(/,/g, ''); 
+            const numValue = parseFloat(rawValue) || 0; // Use parseFloat to handle decimals
+            goldPriceInWordsDisplay.textContent = `${convertNumberToWords(Math.floor(numValue))} تومان`;
+        }
+
+        // Add a new item row (weight & wage)
         function addItemRow() {
             itemCounter++;
             const itemsContainer = document.getElementById('items-container');
@@ -579,13 +621,13 @@
             itemRowDiv.innerHTML = `
                 <button type="button" class="delete-item-button" onclick="deleteItemRow('${itemRowDiv.id}')">X</button>
                 <div class="item-input-group">
-                    <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
-                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
+                    <label for="goldWeight-${itemCounter}">وزن (${toPersianDigits(itemCounter)}):</label>
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.001" min="0" oninput="this.value = Math.max(0, this.value)">
                 </div>
                 <div class="item-input-group">
-                    <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
+                    <label for="wage-${itemCounter}">اجرت (${toPersianDigits(itemCounter)}):</label>
                     <div class="wage-input-and-type">
-                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0">
+                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" oninput="this.value = Math.max(0, this.value)">
                         <select id="wageType-${itemCounter}" class="wage-type-select">
                             <option value="percent">%</option>
                             <option value="amount">ت</option>
@@ -599,77 +641,42 @@
             itemRowDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
+        // Delete an item row
         function deleteItemRow(rowId) {
             const rowToRemove = document.getElementById(rowId);
             if (rowToRemove) {
                 rowToRemove.remove();
-                updateItemRowLabels(); // Re-label remaining rows
+                updateItemRowLabels();
                 calculateGoldPrice(); // Recalculate after deleting an item
             }
         }
 
-
+        // Update labels for item rows after add/delete
         function updateItemRowLabels() {
             document.querySelectorAll('.item-row').forEach((row, index) => {
                 const currentNum = index + 1;
-                row.id = `item-row-${currentNum}`; // Update ID
+                row.id = `item-row-${currentNum}`;
                 
-                // Update labels and input IDs
                 row.querySelector('.gold-weight-input').id = `goldWeight-${currentNum}`;
-                row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${currentNum}):`;
+                row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${toPersianDigits(currentNum)}):`;
                 
                 row.querySelector('.wage-input').id = `wage-${currentNum}`;
-                row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${currentNum}):`;
+                row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${toPersianDigits(currentNum)}):`;
                 row.querySelector('.wage-type-select').id = `wageType-${currentNum}`;
 
-                // Update delete button onclick
                 const deleteButton = row.querySelector('.delete-item-button');
                 if (deleteButton) {
                     deleteButton.setAttribute('onclick', `deleteItemRow('item-row-${currentNum}')`);
                 }
             });
-            // Reset itemCounter if all items are deleted, or adjust it
-            if (document.querySelectorAll('.item-row').length === 0) {
-                itemCounter = 0; 
-            } else {
-                itemCounter = document.querySelectorAll('.item-row').length;
-            }
+            itemCounter = document.querySelectorAll('.item-row').length;
         }
 
-
-        function formatGoldPrice(inputValue) {
-            let latinValue = toLatinDigits(inputValue);
-            latinValue = latinValue.replace(/[^0-9]/g, '');
-
-            if (latinValue.length > 10) { 
-                latinValue = latinValue.substring(0, 10); 
-            }
-            
-            let formattedValue = latinValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            
-            goldPriceInput.value = toPersianDigits(formattedValue);
-            
-            updateGoldPriceInWords();
-        }
-
-        function updateGoldPriceInWords() {
-            const rawValue = toLatinDigits(goldPriceInput.value).replace(/,/g, ''); 
-            const numValue = parseInt(rawValue, 10) || 0;
-            goldPriceInWordsDisplay.textContent = `${convertNumberToWords(numValue)} تومان`;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            addItemRow(); 
-            updateGoldPriceInWords();
-            updateSellerProfitDisplay(); 
-            calculateGoldPrice(); // Initial calculation on load
-        });
-
-
+        // Main calculation logic
         function calculateGoldPrice() {
             const goldPricePerGram = parseFloat(toLatinDigits(goldPriceInput.value).replace(/,/g, ''));
             const enableTax = document.getElementById('enableTax').checked;
-            const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
+            const sellerProfitPercentage = parseFloat(sellerProfitSelect.value);
 
             if (isNaN(goldPricePerGram) || goldPricePerGram <= 0) {
                 detailedResultsDisplay.innerHTML = '';
@@ -697,12 +704,11 @@
                 const goldWeight = parseFloat(toLatinDigits(weightInput.value)); 
                 const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)); 
 
-                // Handle optional wage: if NaN or empty, treat as 0
                 const actualWageValue = isNaN(wageValue) ? 0 : wageValue;
 
                 if (isNaN(goldWeight) || goldWeight <= 0) {
                     detailedResultsHTML += `<p class="item-specific-price"><span class="item-number-icon">${getNumberIcon(index + 1)}</span> <strong>-- <span class="currency">تومان</span></strong></p>`;
-                    return; // Skip this item if weight is invalid or zero
+                    return; 
                 }
 
                 const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
@@ -742,11 +748,32 @@
             document.getElementById('totalFinalPrice').textContent = formatCurrency(grandTotalFinalPrice);
         }
 
+        // Format number to currency with Persian digits and commas
         function formatCurrency(num) {
             if (isNaN(num) || num === null) return '۰';
             let formatted = num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return toPersianDigits(formatted);
         }
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            addItemRow(); // Add one initial item row
+            updateGoldPriceInWords(); // Update gold price in words for initial state
+            // sellerProfitDisplay is removed, so no need to update it
+            calculateGoldPrice(); // Initial calculation
+        });
+
+        // Event listeners for recalculation on input changes
+        goldPriceInput.addEventListener('input', calculateGoldPrice);
+        sellerProfitSelect.addEventListener('change', calculateGoldPrice);
+        document.getElementById('enableTax').addEventListener('change', calculateGoldPrice);
+        document.getElementById('items-container').addEventListener('input', (event) => {
+            if (event.target.classList.contains('gold-weight-input') || 
+                event.target.classList.contains('wage-input') ||
+                event.target.classList.contains('wage-type-select')) {
+                calculateGoldPrice();
+            }
+        });
     </script>
 
 </body>
