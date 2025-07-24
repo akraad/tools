@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه‌گر طلا</title> <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>محاسبه‌گر طلا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* General Body Styling - Super Minimal Light Theme */
         body {
             font-family: 'Vazirmatn', sans-serif;
             margin: 0;
@@ -20,7 +20,6 @@
             line-height: 1.6;
         }
 
-        /* Calculator Container - The core card */
         .calculator-container {
             background-color: #FFFFFF;
             padding: 20px;
@@ -33,7 +32,6 @@
             border: 1px solid #E5E7EB;
         }
 
-        /* Input Group Base Style */
         .input-group {
             margin-bottom: 15px;
             display: flex;
@@ -47,7 +45,6 @@
             font-weight: 500;
         }
 
-        /* Gold Price Input - Special Distinction */
         .gold-price-input-group {
             background-color: #F8F9FA;
             padding: 10px;
@@ -55,7 +52,6 @@
             border: 1px solid #E0E0E0;
             margin-bottom: 20px;
         }
-        /* Style for text version of gold price */
         .gold-price-in-words {
             font-size: 0.85em;
             color: #777;
@@ -64,8 +60,6 @@
             font-weight: 400;
         }
 
-
-        /* Styling for all number inputs and selects */
         .input-group input[type="number"],
         .input-group select {
             width: calc(100% - 16px);
@@ -75,20 +69,19 @@
             background-color: #FFFFFF;
             color: #333;
             font-size: 0.9em;
-            direction: ltr; /* Ensure LTR for numbers but Persian keyboard font */
+            direction: ltr;
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
-            font-family: 'Vazirmatn', sans-serif !important; /* Force Persian font for input value */
+            font-family: 'Vazirmatn', sans-serif !important;
         }
-        /* Hide arrows for Chrome, Safari, Edge */
+
         .input-group input[type="number"]::-webkit-outer-spin-button,
         .input-group input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Placeholder styling (even if text is empty) */
         .input-group input::placeholder {
             font-family: 'Vazirmatn', sans-serif;
             color: #B0B0B0;
@@ -126,8 +119,7 @@
             border-radius: 3px;
         }
 
-        /* Dynamic Weight/Wage Items Container */
-        #items-container { /* Renamed from weights-container */
+        #items-container {
             margin-bottom: 15px;
             padding: 10px;
             border-radius: 8px;
@@ -138,44 +130,43 @@
 
         .item-row {
             display: flex;
-            align-items: flex-end; /* Align to bottom for button alignment */
+            align-items: flex-end;
             margin-bottom: 10px;
         }
         .item-row:last-child {
             margin-bottom: 0;
         }
 
-        .item-row .input-wrapper { /* New wrapper for input and label */
+        .item-row .input-wrapper {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            margin-bottom: 0; /* Remove default input-group margin */
-            margin-right: 5px; /* Space between input pairs */
+            margin-bottom: 0;
+            margin-right: 5px;
         }
         .item-row .input-wrapper label {
-            margin-bottom: 5px; /* Space between label and input */
-            font-size: 0.8em; /* Even smaller label for multiple items */
+            margin-bottom: 5px;
+            font-size: 0.8em;
             white-space: nowrap;
             flex-shrink: 0;
         }
         .item-row .input-wrapper input {
             flex-grow: 1;
-            width: auto; /* Let flexbox control width */
+            width: auto;
         }
 
-        /* Small buttons for add/remove */
         .item-action-buttons {
-            display: flex; /* Make buttons align horizontally */
-            flex-direction: column; /* Stack them vertically */
-            margin-left: 8px; /* Space from last input */
-            gap: 5px; /* Space between plus and minus */
+            display: flex;
+            flex-direction: column;
+            margin-left: 8px;
+            gap: 5px;
         }
         .item-action-button {
             background-color: #6366F1;
             color: #FFFFFF;
             border: none;
-            border-radius: 4px; /* Slightly squared for subtle look */
-            width: 28px; /* Small size */
+            border-radius: 4px;
+            width: 28px;
             height: 28px;
             font-size: 18px;
             display: flex;
@@ -184,7 +175,7 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
             flex-shrink: 0;
-            line-height: 1; /* Adjust line height for '+' '-' */
+            line-height: 1;
         }
         .item-action-button.remove-button {
             background-color: #EF4444;
@@ -199,7 +190,6 @@
             background-color: #DC2626;
         }
 
-        /* Main Calculate Button */
         button.calculate-button {
             width: 100%;
             padding: 10px 15px;
@@ -221,7 +211,6 @@
             box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
         }
 
-        /* Result Section */
         .result-section {
             margin-top: 25px;
             padding-top: 15px;
@@ -278,9 +267,9 @@
         </div>
 
         <div class="input-group gold-price-input-group">
-            <label for="goldPrice">قیمت هر گرم طلا:</label>
+            <label for="goldPrice">مبلغ قیمت هر گرم طلا:</label>
             <div id="goldPriceInWords" class="gold-price-in-words">صفر تومان</div>
-            <input type="number" id="goldPrice" min="0" oninput="formatGoldPrice(this)" onblur="appendZeros(this)">
+            <input type="number" id="goldPrice" min="0" oninput="handleGoldPriceInput(this)" onblur="handleGoldPriceBlur(this)">
         </div>
 
         <div id="items-container">
@@ -288,7 +277,6 @@
         <div class="item-action-buttons" style="flex-direction: row; justify-content: center; margin-left: 0; margin-top: 10px;">
             <button type="button" class="item-action-button" onclick="addItemRow()">+</button>
         </div>
-
 
         <div class="input-group">
             <label for="sellerProfit">سود فروشنده (درصد):</label>
@@ -315,11 +303,11 @@
     </div>
 
     <script>
-        let itemCounter = 0; // To keep track of unique IDs for each item row
+        let itemCounter = 0;
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
 
-        // Function to convert numbers to Persian words
+        // Number to Persian Word Conversion
         const numToWord = {
             0: "صفر", 1: "یک", 2: "دو", 3: "سه", 4: "چهار", 5: "پنج", 6: "شش", 7: "هفت", 8: "هشت", 9: "نه",
             10: "ده", 11: "یازده", 12: "دوازده", 13: "سیزده", 14: "چهارده", 15: "پانزده", 16: "شانزده", 17: "هفده", 18: "هجده", 19: "نوزده",
@@ -331,7 +319,7 @@
         function convertNumberToWords(num) {
             if (num === 0) return "صفر";
             let s = String(num);
-            if (s.length > 15) return "عدد بسیار بزرگ"; // Limit to avoid extremely long strings
+            if (s.length > 15) return "عدد بسیار بزرگ";
 
             let parts = [];
             for (let i = 0; i < s.length; i += 3) {
@@ -391,7 +379,7 @@
                     <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100">
                 </div>
                 ${itemCounter > 1 ? `
-                <div class="item-action-buttons" style="flex-direction: row; align-self: flex-end;">
+                <div class="item-action-buttons">
                     <button type="button" class="item-action-button remove-button" onclick="removeItemRow('item-row-${itemCounter}')">−</button>
                 </div>
                 ` : ''}
@@ -407,32 +395,41 @@
             }
         }
 
-        // Format gold price input with commas and restrict length
-        function formatGoldPrice(input) {
-            let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-            
-            // Limit to 7 digits
-            if (value.length > 7) {
-                value = value.substring(0, 7);
-            }
-
+        // Handles input for gold price: formats with commas and limits length
+        function handleGoldPriceInput(input) {
+            let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas
             updateGoldPriceInWords();
         }
 
-        // Add trailing zeros based on input length
-        function appendZeros(input) {
-            let value = input.value.replace(/,/g, ''); // Remove commas for calculation
-            if (value.length <= 7) { // Only apply if within 7 digits
-                if (value.length === 1) { // If '7' is entered
-                    value = value + '000000'; // Append 6 zeros
-                } else if (value.length > 1 && value.length <= 3) { // If '714' is entered (or 2/3 digits)
-                    value = value + '0000'; // Append 4 zeros
+        // Handles blur for gold price: appends zeros based on length
+        function handleGoldPriceBlur(input) {
+            let value = input.value.replace(/,/g, ''); // Remove commas for zero logic
+
+            if (value.length > 0 && value.length < 7) {
+                if (value.length === 1) { // e.g., '7' -> '7000000'
+                    value += '000000';
+                } else if (value.length >= 2 && value.length <= 3) { // e.g., '71', '695' -> '7100000', '6950000'
+                    value += '00000'; // Always add 5 zeros
+                } else if (value.length === 4) { // e.g., '7140' -> '7140000'
+                    value += '000';
+                } else if (value.length === 5) { // e.g., '71400' -> '7140000'
+                    value += '00';
+                } else if (value.length === 6) { // e.g., '714000' -> '7140000'
+                    value += '0';
                 }
+            } else if (value.length === 7 && value.endsWith('00')) {
+                // If user inputs 7 digits ending in 00, ensure it doesn't get messed up if they started with fewer.
+                // This scenario might need more specific handling based on exact use case
+                // For now, if it's 7 digits, we assume it's correct and don't append more zeros.
+            } else if (value.length > 7) {
+                value = value.substring(0, 7); // Ensure it doesn't exceed 7 digits + appended zeros (total value length)
             }
+            
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas back
             updateGoldPriceInWords();
         }
+
 
         // Update Persian words display for gold price
         function updateGoldPriceInWords() {
@@ -443,14 +440,12 @@
         // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
             addItemRow(); // Add the first item row
-            goldPriceInput.addEventListener('input', formatGoldPrice); // Attach event listener
-            goldPriceInput.addEventListener('blur', appendZeros); // Attach blur listener
             updateGoldPriceInWords(); // Initial display
         });
 
 
         function calculateGoldPrice() {
-            const goldPricePerGram = parseFloat(goldPriceInput.value.replace(/,/g, '')); // Remove commas for calculation
+            const goldPricePerGram = parseFloat(goldPriceInput.value.replace(/,/g, ''));
             const enableTax = document.getElementById('enableTax').checked;
             const sellerProfitPercentage = parseFloat(document.getElementById('sellerProfit').value);
 
@@ -501,18 +496,14 @@
 
             const totalFinalPrice = totalRawGoldPrice + totalCalculatedWage + totalCalculatedSellerProfit + totalCalculatedTaxAmount;
 
-            // Display results
-            // document.getElementById('totalRawGoldPrice').textContent = formatCurrency(totalRawGoldPrice); // Removed as per request
             document.getElementById('calculatedWageDisplay').textContent = formatCurrency(totalCalculatedWage);
             document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(totalCalculatedSellerProfit);
             document.getElementById('calculatedTax').textContent = formatCurrency(totalCalculatedTaxAmount);
             document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
         }
 
-        // Helper function to format numbers with commas
         function formatCurrency(num) {
             if (isNaN(num) || num === null) return '0';
-            // Use standard JS toFixed then replace Latin numbers with Persian for commas (if needed)
             let formatted = num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return formatted.replace(/0/g, '۰').replace(/1/g, '۱').replace(/2/g, '۲').replace(/3/g, '۳').replace(/4/g, '۴').replace(/5/g, '۵').replace(/6/g, '۶').replace(/7/g, '۷').replace(/8/g, '۸').replace(/9/g, '۹');
         }
