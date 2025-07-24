@@ -171,23 +171,7 @@
             padding-top: 25px; /* Extra padding for the shifted plus button */
             position: relative;
         }
-        #items-container:empty {
-             /* Show a hint if no items are added */
-            min-height: 80px; /* Minimum height for better appearance when empty */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-text);
-            font-size: 0.9em;
-            text-align: center;
-        }
-        #items-container:empty::before {
-            content: "برای افزودن طلا، روی دکمه + کلیک کنید.";
-            position: absolute;
-        }
-        #items-container:empty #add-item-global-button {
-            top: -15px; /* Position button correctly even when empty */
-        }
+        /* No specific :empty styles needed if we always add one row */
 
 
         .item-row {
@@ -527,11 +511,8 @@
         function addItemRow() {
             itemCounter++;
             const itemsContainer = document.getElementById('items-container');
-            // Remove the empty state message if it exists
-            const emptyMessage = itemsContainer.querySelector('.items-empty-message');
-            if (emptyMessage) {
-                emptyMessage.remove();
-            }
+            // No need to remove empty state message as it's not explicitly added anymore in DOM.
+            // The :empty pseudo-class in CSS handles it.
 
             const itemRowDiv = document.createElement('div');
             itemRowDiv.classList.add('item-row');
@@ -596,10 +577,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Add initial empty message instead of adding a row
-            const itemsContainer = document.getElementById('items-container');
-            itemsContainer.innerHTML = '<div class="items-empty-message"></div>'; // This div is handled by :empty pseudo-class and ::before
-
+            // Automatically add the first item row when the page loads
+            addItemRow(); 
             updateGoldPriceInWords();
         });
 
