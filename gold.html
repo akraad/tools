@@ -49,7 +49,6 @@
             background-color: #F8F9FA;
             padding: 10px;
             border-radius: 8px;
-            /* Match the specific border of this group to weight/wage inputs */
             border: 1px solid #D1D5DB; /* Lighter border for consistency */
             margin-bottom: 20px;
         }
@@ -64,10 +63,12 @@
         /* Unified Input/Select Styling for consistent height and appearance */
         .input-group input[type="text"],
         .input-group input[type="number"],
-        .input-group select {
+        .input-group select,
+        .item-row .input-wrapper input, /* Apply to weight and wage inputs */
+        .item-row .wage-type-select /* Apply to new wage type select */
+        {
             width: calc(100% - 16px); /* Full width minus padding */
             padding: 8px; /* Consistent padding */
-            /* Match the specific border of weight/wage inputs to goldPrice and this group */
             border: 1px solid #D1D5DB; /* Lighter border for consistency */
             border-radius: 6px;
             background-color: #FFFFFF;
@@ -77,7 +78,7 @@
             text-align: right;
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
-            font-family: 'Vazirmatn', sans-serif !important;
+            font-family: 'Vazirmatn', sans-serif !important; /* Set font here for all unified inputs */
             height: 38px; /* Fixed height for consistency */
             box-sizing: border-box; /* Include padding and border in height */
         }
@@ -100,7 +101,10 @@
 
         .input-group input[type="text"]:focus,
         .input-group input[type="number"]:focus,
-        .input-group select:focus {
+        .input-group select:focus,
+        .item-row .input-wrapper input:focus,
+        .item-row .wage-type-select:focus
+        {
             outline: none;
             border-color: #6366F1;
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
@@ -136,7 +140,6 @@
             padding: 10px;
             border-radius: 8px;
             background-color: #F8F9FA;
-            /* Border of items container should be the lighter one */
             border: 1px solid #E0E0E0; 
             padding-top: 20px; /* Extra padding for the shifted plus button */
             position: relative; /* For absolute positioning of the plus button */
@@ -162,21 +165,44 @@
         .item-row .input-wrapper:first-child { /* Weight input wrapper */
             margin-left: 0; /* No margin-right to align with container */
         }
-        .item-row .input-wrapper:nth-child(2) { /* Wage input wrapper */
-            margin-right: 5px; /* Space between weight and wage */
+        /* For wage input, adjust width to accommodate the select next to it */
+        .item-row .wage-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-basis: 48%; /* Same as weight input for overall alignment */
+            margin-right: 5px; /* Space between weight and wage group */
         }
-        .item-row .input-wrapper label {
+        .item-row .wage-input-and-type {
+            display: flex;
+            align-items: center; /* Align input and select vertically */
+            width: 100%;
+        }
+        .item-row .wage-input-and-type input {
+            flex-grow: 1;
+            width: auto; /* Let flexbox control width */
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            padding-right: 4px; /* Adjust padding for better look next to select */
+        }
+        .item-row .wage-type-select {
+            width: 60px; /* Fixed width for the select */
+            flex-shrink: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-right: none; /* Remove right border to merge with input */
+            text-align-last: center; /* Center text in select */
+            padding-left: 2px; /* Adjust padding */
+        }
+
+
+        .item-row .input-wrapper label,
+        .item-row .wage-input-wrapper label {
             margin-bottom: 5px;
             font-size: 0.8em;
             white-space: nowrap;
             flex-shrink: 0;
             width: 100%; /* Ensure label takes full width */
-        }
-        .item-row .input-wrapper input {
-            flex-grow: 1;
-            width: calc(100% - 16px); /* Adjusted for nested padding/border */
-            height: 38px; /* Match fixed height */
-            box-sizing: border-box; /* Include padding and border in height */
         }
 
         /* New positioning for the add button outside the box, top-left */
@@ -204,7 +230,7 @@
             transform: scale(1.1);
         }
 
-        /* Hide the old "add item" containers and remove button */
+        /* Hide any remnants of old add/remove buttons */
         .add-item-main-button-container, .item-row .add-button-container, .remove-item-button {
             display: none;
         }
@@ -312,7 +338,6 @@
 
         <div class="result-section">
             <h3>نتایج محاسبه:</h3>
-            <p><span>اجرت کل:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
             <p><span>سود فروشنده کل:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
             <p><span>مالیات محاسبه شده کل:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
             <p class="total-result"><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
@@ -394,7 +419,6 @@
             return result.join(" و ").trim();
         }
 
-        // Add item row with weight and wage
         function addItemRow() {
             itemCounter++;
             const itemsContainer = document.getElementById('items-container');
@@ -407,29 +431,27 @@
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
                     <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0" oninput="formatNumberInputToPersian(this)">
                 </div>
-                <div class="input-wrapper">
+                <div class="input-wrapper wage-input-wrapper">
                     <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
-                    <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" max="100" oninput="formatNumberInputToPersian(this)">
+                    <div class="wage-input-and-type">
+                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" oninput="formatNumberInputToPersian(this)">
+                        <select id="wageType-${itemCounter}" class="wage-type-select">
+                            <option value="percent">%</option>
+                            <option value="amount">تومان</option>
+                        </select>
+                    </div>
                 </div>
             `;
             itemsContainer.appendChild(itemRowDiv);
 
-            // Re-label all items correctly after adding a new one
             updateItemRowLabels();
         }
 
-        // Removed removeItemRow function entirely as requested.
-        // If a "remove" functionality is needed in the future, it would need to be re-added.
-
-        // Function to format number inputs (weight, wage) to Persian digits
         function formatNumberInputToPersian(inputElement) {
-            // Get the value, convert any Persian digits to Latin, then remove non-numeric chars (except decimal point for weight)
             let latinValue = toLatinDigits(inputElement.value);
             
-            // For weight, allow decimal point. For wage, only integers.
             if (inputElement.id.includes('goldWeight')) {
                 latinValue = latinValue.replace(/[^0-9.]/g, '');
-                // Ensure only one decimal point
                 const parts = latinValue.split('.');
                 if (parts.length > 2) {
                     latinValue = parts[0] + '.' + parts.slice(1).join('');
@@ -441,20 +463,20 @@
             inputElement.value = toPersianDigits(latinValue);
         }
 
-        // Update item row labels (e.g., "وزن (1):", "وزن (2):")
         function updateItemRowLabels() {
             document.querySelectorAll('.item-row').forEach((row, index) => {
                 const currentNum = index + 1;
-                row.id = `item-row-${currentNum}`; // Update ID
+                row.id = `item-row-${currentNum}`;
                 row.querySelector('.gold-weight-input').id = `goldWeight-${currentNum}`;
                 row.querySelector('.gold-weight-input').parentNode.querySelector('label').textContent = `وزن (${currentNum}):`;
+                
                 row.querySelector('.wage-input').id = `wage-${currentNum}`;
                 row.querySelector('.wage-input').parentNode.querySelector('label').textContent = `اجرت (${currentNum}):`;
+                row.querySelector('.wage-type-select').id = `wageType-${currentNum}`;
             });
         }
 
 
-        // Formats gold price input: accepts only 7 digits, adds Persian commas
         function formatGoldPrice(inputValue) {
             let latinValue = toLatinDigits(inputValue);
             latinValue = latinValue.replace(/[^0-9]/g, '');
@@ -470,17 +492,15 @@
             updateGoldPriceInWords();
         }
 
-        // Update Persian words display for gold price
         function updateGoldPriceInWords() {
             const rawValue = toLatinDigits(goldPriceInput.value).replace(/,/g, ''); 
             const numValue = parseInt(rawValue, 10) || 0;
             goldPriceInWordsDisplay.textContent = `${convertNumberToWords(numValue)} تومان`;
         }
 
-        // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
-            addItemRow(); // Add the first item row on load
-            updateGoldPriceInWords(); // Initial display for gold price
+            addItemRow();
+            updateGoldPriceInWords();
         });
 
 
@@ -496,6 +516,7 @@
 
             const goldWeightInputs = document.querySelectorAll('.gold-weight-input');
             const wageInputs = document.querySelectorAll('.wage-input');
+            const wageTypeSelects = document.querySelectorAll('.wage-type-select');
 
             if (goldWeightInputs.length === 0) {
                  alert('لطفاً حداقل یک آیتم (وزن و اجرت) را وارد کنید.');
@@ -508,15 +529,22 @@
             let hasInvalidInput = false;
 
             goldWeightInputs.forEach((weightInput, index) => {
-                const goldWeight = parseFloat(toLatinDigits(weightInput.value)); // Convert to Latin for calculation
-                const wagePercentage = parseFloat(toLatinDigits(wageInputs[index].value)) || 0; // Convert to Latin for calculation
+                const goldWeight = parseFloat(toLatinDigits(weightInput.value));
+                const wageValue = parseFloat(toLatinDigits(wageInputs[index].value)) || 0;
+                const wageType = wageTypeSelects[index].value;
 
-                if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wagePercentage) || wagePercentage < 0) {
+                if (isNaN(goldWeight) || goldWeight <= 0 || isNaN(wageValue) || wageValue < 0) {
                     hasInvalidInput = true;
                 } else {
                     const rawGoldPriceForThisItem = goldWeight * goldPricePerGram;
-                    const calculatedWageForThisItem = (rawGoldPriceForThisItem * wagePercentage) / 100;
+                    let calculatedWageForThisItem = 0;
 
+                    if (wageType === 'percent') {
+                        calculatedWageForThisItem = (rawGoldPriceForThisItem * wageValue) / 100;
+                    } else { // wageType === 'amount'
+                        calculatedWageForThisItem = goldWeight * wageValue; // Wage per gram * weight
+                    }
+                    
                     totalRawGoldPrice += rawGoldPriceForThisItem;
                     totalCalculatedWage += calculatedWageForThisItem;
                 }
@@ -536,7 +564,7 @@
 
             const totalFinalPrice = totalRawGoldPrice + totalCalculatedWage + totalCalculatedSellerProfit + totalCalculatedTaxAmount;
 
-            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(totalCalculatedWage);
+            // Removed calculatedWageDisplay as requested
             document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(totalCalculatedSellerProfit);
             document.getElementById('calculatedTax').textContent = formatCurrency(totalCalculatedTaxAmount);
             document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
