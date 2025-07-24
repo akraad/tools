@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه‌گر قیمت طلا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Body Styling */
+        /* General Body Styling - Light Theme */
         body {
-            font-family: 'Vazirmatn', sans-serif; /* Using Vazirmatn for entire body */
+            font-family: 'Vazirmatn', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* Even darker background for more contrast */
-            color: #E0E0E0; /* Light Gray for text */
+            background-color: #F8F8F8; /* Very light gray background */
+            color: #333; /* Dark text for readability */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,25 +24,26 @@
         .header-container {
             width: 100%;
             text-align: center;
-            padding: 20px 0;
-            background-color: #262626; /* Slightly lighter dark gray */
-            border-bottom: 1px solid #333; /* Subtle border */
+            padding: 25px 0; /* More padding for header */
+            background-color: #EFEFEF; /* Light gray for header background */
+            border-bottom: 1px solid #E0E0E0; /* Subtle light border */
             margin-bottom: 40px;
-            position: relative; /* For absolute positioning of back button */
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
         }
 
         .header-text {
-            font-size: 1.8em; /* Title size */
-            color: #8D62ED; /* A more refined purple accent */
+            font-size: 2em; /* Slightly larger title for impact */
+            color: #4263EB; /* A modern blue accent */
             margin: 0;
-            font-weight: 600; /* Slightly bolder */
+            font-weight: 700; /* Bold title */
         }
 
         /* Back Button */
         .back-button {
             position: absolute;
             top: 25px;
-            left: 20px; /* Position to the left */
+            left: 25px; /* Position to the left */
             font-size: 0.9em;
             color: #6C757D; /* Muted gray for the link */
             text-decoration: none;
@@ -51,45 +52,47 @@
         }
 
         .back-button:hover {
-            color: #A0A0A0; /* Lighter on hover */
+            color: #333; /* Darker on hover */
         }
 
-        /* Calculator Container */
+        /* Calculator Container - Modern Minimal */
         .calculator-container {
-            background-color: #262626; /* Match header background */
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            background-color: #FFFFFF; /* Pure white background for the card */
+            padding: 35px; /* More padding inside the card */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Pronounced but soft shadow */
             width: 90%;
-            max-width: 450px; /* Slightly narrower for more minimalism */
+            max-width: 480px; /* Comfortable width */
             margin-bottom: 60px;
-            border-right: 3px solid #00BFA5; /* Teal accent */
+            border: 1px solid #E0E0E0; /* Subtle border for definition */
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px; /* More space between input groups */
             display: flex;
             flex-direction: column;
         }
 
         .input-group label {
-            margin-bottom: 8px;
-            font-size: 0.95em; /* Slightly smaller label font */
-            color: #C0C0C0; /* Softer label color */
+            margin-bottom: 10px; /* More space between label and input */
+            font-size: 1em;
+            color: #555; /* Slightly darker label color */
             display: block;
+            font-weight: 500;
         }
 
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 20px);
-            padding: 10px; /* Reduced padding for smaller inputs */
-            border: 1px solid #3a3a3a;
-            border-radius: 4px;
-            background-color: #3a3a3a;
-            color: #E0E0E0;
-            font-size: 1em; /* Smaller input font */
-            direction: ltr; /* For number inputs */
-            text-align: right; /* For number inputs */
+            width: calc(100% - 24px); /* Adjust for padding and border */
+            padding: 12px; /* Generous padding for inputs */
+            border: 1px solid #D0D0D0; /* Light border */
+            border-radius: 8px; /* Rounded input corners */
+            background-color: #FDFDFD; /* Off-white for input background */
+            color: #333; /* Dark text for input values */
+            font-size: 1.1em;
+            direction: ltr;
+            text-align: right;
+            transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
         }
         /* Hide arrows for Chrome, Safari, Edge */
@@ -102,78 +105,94 @@
         .input-group input[type="number"]:focus,
         .input-group select:focus {
             outline: none;
-            border-color: #8D62ED; /* Accent color on focus */
-            box-shadow: 0 0 0 2px rgba(141, 98, 237, 0.3);
+            border-color: #4263EB; /* Modern blue on focus */
+            box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.2); /* Soft glow on focus */
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            justify-content: flex-end; /* Align to the right for RTL */
+            margin-bottom: 25px;
+            justify-content: flex-end;
         }
 
         .checkbox-group label {
-            margin-right: 10px;
-            font-size: 0.95em; /* Match label font size */
+            margin-right: 12px; /* More space for checkbox label */
+            font-size: 1em;
             cursor: pointer;
-            color: #C0C0C0; /* Softer label color */
+            color: #555;
+            font-weight: 500;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #00BFA5; /* Color for checked state */
+            width: 20px; /* Slightly larger checkbox */
+            height: 20px;
+            accent-color: #00BFA5; /* Teal for checked state */
             cursor: pointer;
+            border: 1px solid #CCC; /* Lighter border for checkbox */
+            border-radius: 4px; /* Rounded checkbox */
         }
 
         button {
             width: 100%;
-            padding: 14px 20px; /* Slightly reduced button padding */
-            background-color: #00BFA5; /* Teal button */
-            color: #1a1a1a; /* Dark text on button */
+            padding: 16px 20px; /* Generous button padding */
+            background-color: #4CAF50; /* Green for action */
+            color: #FFFFFF; /* White text on button */
             border: none;
-            border-radius: 4px;
-            font-size: 1.1em; /* Slightly smaller button font */
+            border-radius: 8px; /* Rounded button */
+            font-size: 1.2em;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2); /* Soft shadow for button */
         }
 
         button:hover {
-            background-color: #009688; /* Darker teal on hover */
+            background-color: #43A047; /* Darker green on hover */
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
         }
 
         .result-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed #3a3a3a;
+            margin-top: 40px; /* More space above results */
+            padding-top: 30px;
+            border-top: 1px dashed #E0E0E0; /* Lighter dashed separator */
             text-align: center;
+            line-height: 1.8; /* More space between lines of results */
         }
 
         .result-section p {
-            font-size: 1em; /* Result text font size */
-            margin-bottom: 8px; /* Reduced margin */
-            color: #E0E0E0;
+            font-size: 1em;
+            margin-bottom: 5px; /* Smaller margin for compact results */
+            color: #555;
+            display: flex;
+            justify-content: space-between; /* Space out label and value */
+            align-items: baseline;
+            padding: 0 10px; /* Padding for result lines */
         }
 
         .result-section strong {
-            color: #8D62ED; /* Accent color for values */
-            font-size: 1.2em; /* Slightly smaller value font */
-            display: block;
-            margin-top: 4px;
+            color: #4263EB; /* Modern blue accent for values */
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-right: 5px; /* Space before "تومان" */
+        }
+
+        .result-section span.currency {
+            color: #666; /* Slightly muted color for "تومان" */
+            font-size: 0.9em;
+            margin-left: 5px; /* Space after value */
         }
 
         /* Footer Styling */
         .footer {
-            margin-top: auto; /* Pushes footer to the bottom */
-            font-size: 0.8em; /* Slightly smaller footer font */
-            color: #9E9E9E; /* Muted gray for copyright */
-            padding: 20px;
+            margin-top: auto;
+            font-size: 0.8em;
+            color: #888; /* Muted gray for copyright */
+            padding: 25px;
             width: 100%;
-            text-align: center; /* Center align */
-            direction: ltr; /* Left-to-right direction for English text */
+            text-align: center;
+            direction: ltr;
         }
     </style>
 </head>
@@ -187,17 +206,17 @@
     <div class="calculator-container">
         <div class="input-group">
             <label for="goldPrice">قیمت هر گرم طلا:</label>
-            <input type="number" id="goldPrice" placeholder="مثال: 3,500,000" min="0">
+            <input type="number" id="goldPrice" placeholder="3,500,000" min="0">
         </div>
 
         <div class="input-group">
             <label for="goldWeight">وزن طلا (گرم):</label>
-            <input type="number" id="goldWeight" placeholder="مثال: 5.25" step="0.01" min="0">
+            <input type="number" id="goldWeight" placeholder="5.25" step="0.01" min="0">
         </div>
 
         <div class="input-group">
             <label for="wage">اجرت (درصد):</label>
-            <input type="number" id="wage" placeholder="مثال: 15" min="0" max="100">
+            <input type="number" id="wage" placeholder="15" min="0" max="100">
         </div>
 
         <div class="input-group">
@@ -221,12 +240,11 @@
         <button onclick="calculateGoldPrice()">محاسبه قیمت نهایی</button>
 
         <div class="result-section">
-            <p>قیمت طلا خام: <strong id="rawGoldPrice">0 تومان</strong></p>
-            <p>اجرت محاسبه شده: <strong id="calculatedWageDisplay">0 تومان</strong></p>
-            <p>سود فروشنده محاسبه شده: <strong id="calculatedProfitDisplay">0 تومان</strong></p>
-            <p>قیمت نهایی قبل از مالیات: <strong id="finalPriceBeforeTax">0 تومان</strong></p>
-            <p>مالیات محاسبه شده: <strong id="calculatedTax">0 تومان</strong></p>
-            <p>قیمت نهایی کل: <strong id="totalFinalPrice">0 تومان</strong></p>
+            <p><span>قیمت طلا خام:</span> <strong><span id="rawGoldPrice">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>اجرت:</span> <strong><span id="calculatedWageDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>سود فروشنده:</span> <strong><span id="calculatedProfitDisplay">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>مالیات محاسبه شده:</span> <strong><span id="calculatedTax">0</span> <span class="currency">تومان</span></strong></p>
+            <p><span>قیمت نهایی کل:</span> <strong><span id="totalFinalPrice">0</span> <span class="currency">تومان</span></strong></p>
         </div>
     </div>
 
@@ -259,25 +277,22 @@
             // 3. محاسبه سود فروشنده (درصد از قیمت طلا خام)
             const calculatedSellerProfit = (rawGoldPrice * sellerProfitPercentage) / 100;
 
-            // قیمت قبل از مالیات: قیمت طلا خام + اجرت + سود فروشنده
-            const priceBeforeTax = rawGoldPrice + calculatedWage + calculatedSellerProfit;
-
             let calculatedTaxAmount = 0;
             if (enableTax) {
                 // مالیات: (اجرت + سود فروشنده) × ۱۰ درصد
                 calculatedTaxAmount = (calculatedWage + calculatedSellerProfit) * 0.10;
             }
 
-            // قیمت نهایی: قیمت قبل از مالیات + مالیات
-            const totalFinalPrice = priceBeforeTax + calculatedTaxAmount;
+            // قیمت نهایی: قیمت طلا خام + اجرت + سود فروشنده + مالیات
+            const totalFinalPrice = rawGoldPrice + calculatedWage + calculatedSellerProfit + calculatedTaxAmount;
+
 
             // Display results
-            document.getElementById('rawGoldPrice').textContent = formatCurrency(rawGoldPrice) + ' تومان';
-            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(calculatedWage) + ' تومان';
-            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(calculatedSellerProfit) + ' تومان';
-            document.getElementById('finalPriceBeforeTax').textContent = formatCurrency(priceBeforeTax) + ' تومان';
-            document.getElementById('calculatedTax').textContent = formatCurrency(calculatedTaxAmount) + ' تومان';
-            document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice) + ' تومان';
+            document.getElementById('rawGoldPrice').textContent = formatCurrency(rawGoldPrice);
+            document.getElementById('calculatedWageDisplay').textContent = formatCurrency(calculatedWage);
+            document.getElementById('calculatedProfitDisplay').textContent = formatCurrency(calculatedSellerProfit);
+            document.getElementById('calculatedTax').textContent = formatCurrency(calculatedTaxAmount);
+            document.getElementById('totalFinalPrice').textContent = formatCurrency(totalFinalPrice);
         }
 
         // Helper function to format numbers with commas
