@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ابزارک ها</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* General Body Styling */
         body {
@@ -30,42 +31,47 @@
         }
 
         .header-text {
-            font-family: 'Vazirmatn', sans-serif; /* A modern Persian font, consider linking from Google Fonts */
+            font-family: 'Vazirmatn', sans-serif; /* A modern Persian font */
             font-size: 1.8em; /* Much smaller title */
             color: #BB86FC; /* A subtle blue/purple for accent */
             margin: 0;
             font-weight: 500;
         }
 
-        /* Options List Styling */
-        .options-list {
-            list-style: none;
+        /* Options Grid Styling */
+        .options-grid {
+            display: grid; /* Use CSS Grid for layout */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Two columns, responsive */
+            gap: 15px; /* Space between items */
             padding: 0;
             width: 90%;
-            max-width: 500px; /* Constrain width for minimalism */
+            max-width: 700px; /* Adjust max-width to accommodate two columns comfortably */
             margin-bottom: 60px;
         }
 
-        .options-list li {
+        .options-grid li {
             background-color: #2c2c2c; /* Darker background for items */
-            margin-bottom: 10px;
-            padding: 15px 20px;
+            padding: 15px; /* Slightly reduced padding */
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
             text-align: right; /* Align text to the right for RTL */
-            border-right: 3px solid #03DAC6; /* Teal accent - can be yellow or red */
+            border-right: 3px solid #03DAC6; /* Teal accent */
+            display: flex; /* To center content vertically if needed, though span is block */
+            align-items: center;
+            min-height: 70px; /* Set a minimum height for consistent box size */
         }
 
-        .options-list li:hover {
+        .options-grid li:hover {
             background-color: #3a3a3a; /* Slightly lighter on hover */
             transform: translateY(-2px);
         }
 
-        .options-list li span {
+        .options-grid li span {
             color: #E0E0E0; /* Light gray for option text */
-            font-size: 1.05em;
-            display: block; /* Ensures span takes full width */
+            font-size: 0.95em; /* Slightly smaller font for options */
+            display: block;
+            width: 100%; /* Ensure text fills the box width */
         }
 
         /* Footer Styling */
@@ -78,8 +84,15 @@
             text-align: center; /* Center align */
             direction: ltr; /* Left-to-right direction for English text */
         }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr; /* Stack options on top of each other on smaller screens */
+                max-width: 90%; /* Use full width for single column */
+            }
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -87,7 +100,7 @@
         <h1 class="header-text">ابزارک های کاربردی</h1>
     </div>
 
-    <ul class="options-list">
+    <ul class="options-grid">
         <li><span>گزینه اول</span></li>
         <li><span>گزینه دوم</span></li>
         <li><span>گزینه سوم</span></li>
