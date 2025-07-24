@@ -17,6 +17,8 @@
             --shadow-light: rgba(0, 0, 0, 0.05);
             --shadow-medium: rgba(0, 0, 0, 0.1);
             --focus-glow: rgba(0, 123, 255, 0.25);
+            --input-height: 44px; /* Consistent input height */
+            --input-padding: 10px; /* Consistent input padding */
         }
 
         body {
@@ -75,13 +77,15 @@
             font-weight: 500;
         }
 
-        .gold-price-input-group {
-            background-color: #E9F5FF; /* Lighter blue background for this section */
+        /* Generic box styling for major input sections */
+        .info-box {
+            background-color: #E9F5FF; /* Lighter blue background for these sections */
             padding: 15px;
             border-radius: 10px;
             border: 1px solid #cce5ff;
             margin-bottom: 25px;
         }
+
         .gold-price-in-words {
             font-size: 0.88em; /* Slightly larger */
             color: var(--light-text);
@@ -98,8 +102,8 @@
         .input-group input[type="text"],
         .input-group input[type="number"],
         .input-group select {
-            width: calc(100% - 20px); /* Adjusted for 10px padding */
-            padding: 10px; /* Increased padding */
+            width: calc(100% - (2 * var(--input-padding))); /* Adjusted for padding */
+            padding: var(--input-padding);
             border: 1px solid var(--border-color);
             border-radius: 8px; /* More rounded */
             background-color: var(--card-background);
@@ -110,11 +114,8 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             -moz-appearance: textfield;
             font-family: 'Vazirmatn', sans-serif !important;
-            height: 44px; /* Slightly taller */
+            height: var(--input-height);
             box-sizing: border-box;
-        }
-        #sellerProfit {
-            width: calc(100% - 20px);
         }
 
         .input-group input[type="number"]::-webkit-outer-spin-button,
@@ -123,10 +124,10 @@
             margin: 0;
         }
 
-        .input-group input::placeholder {
-            font-family: 'Vazirmatn', sans-serif;
+        .input-group input::placeholder { /* Placeholder styling removed as per request */
+            /* font-family: 'Vazirmatn', sans-serif;
             color: #B0B0B0;
-            font-weight: 300;
+            font-weight: 300; */
         }
 
         .input-group input[type="text"]:focus,
@@ -171,162 +172,170 @@
             padding-top: 25px; /* Extra padding for the shifted plus button */
             position: relative;
         }
-        /* No specific :empty styles needed if we always add one row */
-
 
         .item-row {
             display: flex;
             flex-wrap: wrap; /* Allow items to wrap to next line on smaller screens */
             align-items: flex-start;
             margin-bottom: 15px; /* More space between rows */
-            justify-content: space-between;
+            justify-content: flex-start; /* Align items to start for consistent spacing */
             background-color: #FFFFFF; /* White background for each row */
             padding: 12px;
             border-radius: 8px;
             border: 1px solid #e9ecef; /* Lighter border */
             box-shadow: 0 2px 8px var(--shadow-light); /* Slight shadow for separation */
+            gap: 10px; /* Gap between weight and wage inputs */
         }
         .item-row:last-child {
             margin-bottom: 0;
         }
 
+        /* New styling for item-row inputs (weight and wage) */
         .item-row .input-wrapper {
             display: flex;
             flex-direction: column;
-            margin-bottom: 0; /* Handled by flex-wrap gap */
-            flex: 1; /* Allow to grow and shrink */
-            min-width: 110px; /* Adjusted min-width for weight, considering new padding */
-            max-width: calc(50% - 10px); /* Max width for two columns with gap */
-            margin-left: 5px; /* Small gap between columns */
-            margin-right: 5px; /* Small gap between columns */
+            /* Flex basis of 33.33% - 10px (for gap) for roughly 1/3rd width of max-width of calculator-container */
+            flex-basis: calc((380px / 3) - 20px); /* Adjust based on calculator-container max-width */
+            flex-grow: 0; /* Don't grow by default */
+            flex-shrink: 1; /* Allow shrinking */
+            min-width: 90px; /* Minimum width to prevent collapse */
+            max-width: 120px; /* A reasonable max-width for 1/3rd on larger mobile screens */
         }
-        .item-row .input-wrapper:first-child {
-             margin-right: 5px; /* ensure space to the right of weight input */
-        }
-
-
-        /* Specific styles for wage input to accommodate select */
-        .item-row .wage-input-wrapper {
+        
+        .item-row .wage-input-wrapper { /* Same styling for wage as weight */
             display: flex;
             flex-direction: column;
-            flex: 1; /* Allow to grow and shrink */
-            min-width: 140px; /* Adjusted min-width to accommodate select and input */
-            max-width: calc(50% - 10px); /* Max width for two columns with gap */
-            margin-right: 5px; /* Space between weight and wage group */
-            margin-left: 5px; /* Added for symmetry */
+            flex-basis: calc((380px / 3) - 20px);
+            flex-grow: 0;
+            flex-shrink: 1;
+            min-width: 90px; 
+            max-width: 120px;
         }
+
         .item-row .wage-input-and-type {
             display: flex;
             align-items: center;
-            width: 100%; /* Ensure this flex container takes full width of its parent */
+            width: 100%;
         }
         .item-row .wage-input-and-type input {
             flex-grow: 1;
             width: auto;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            padding-right: 8px; /* Adjusted for larger padding */
+            padding-right: 8px;
             text-align: right;
-            font-size: 1em; /* Consistent font size */
-            height: 44px; /* Consistent height */
+            font-size: 1em;
+            height: var(--input-height);
         }
         .item-row .wage-type-select {
-            width: 65px; /* Slightly wider for better text fit */
+            width: 40px; /* Smaller width for % or T */
             flex-shrink: 0;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
             border-right: none;
             text-align-last: center;
-            padding-left: 5px; /* Adjusted padding */
-            font-size: 0.95em; /* Slightly smaller font */
+            padding: 0; /* Remove padding to make options visible */
+            font-size: 0.95em;
             direction: ltr;
-            height: 44px; /* Consistent height */
-            background-color: #f0f2f5; /* Different background for select */
+            height: var(--input-height);
+            background-color: #f0f2f5;
+            -webkit-appearance: none; /* Remove default arrow for cleaner look */
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            outline: none;
         }
+        .item-row .wage-type-select option {
+            text-align: center;
+        }
+        .item-row .wage-type-select:focus {
+             box-shadow: none; /* Remove focus glow from this tiny select */
+             border-color: var(--border-color);
+        }
+
 
         .item-row .input-wrapper label,
         .item-row .wage-input-wrapper label {
-            margin-bottom: 6px; /* Slightly more space */
-            font-size: 0.85em; /* Slightly larger label font */
+            margin-bottom: 6px;
+            font-size: 0.85em;
             white-space: nowrap;
             flex-shrink: 0;
             width: 100%;
         }
         
-        /* Adjusted width for inputs within item-row to fit the new flex context */
         .item-row .input-wrapper input {
-            width: calc(100% - 20px); /* Re-calculate based on direct parent padding */
-            font-size: 1em; /* Consistent font size */
-            height: 44px; /* Consistent height */
+            width: calc(100% - (2 * var(--input-padding))); /* Re-calculate based on direct parent padding */
+            font-size: 1em;
+            height: var(--input-height);
         }
 
 
         #add-item-global-button {
             position: absolute;
-            top: -18px; /* Slightly more negative for bigger button */
-            left: -18px; /* Adjusted for symmetry */
+            top: -18px;
+            left: -18px;
             background-color: var(--primary-color);
             color: #FFFFFF;
             border: none;
             border-radius: 50%;
-            width: 36px; /* Larger button */
+            width: 36px;
             height: 36px;
-            font-size: 28px; /* Larger plus sign */
+            font-size: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 4px 12px var(--shadow-medium); /* More prominent shadow */
+            box-shadow: 0 4px 12px var(--shadow-medium);
             z-index: 10;
         }
         #add-item-global-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
             transform: scale(1.1);
         }
 
         button.calculate-button {
             width: 100%;
-            padding: 12px 15px; /* More padding */
+            padding: 12px 15px;
             background-color: var(--secondary-color);
             color: #FFFFFF;
             border: none;
-            border-radius: 8px; /* More rounded */
-            font-size: 1.1em; /* Larger font */
+            border-radius: 8px;
+            font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.1s;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); /* Green shadow */
-            margin-top: 25px; /* More space */
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            margin-top: 25px;
         }
 
         button.calculate-button:hover {
-            background-color: #218838; /* Darker green on hover */
-            transform: translateY(-2px); /* More pronounced lift */
+            background-color: #218838;
+            transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(40, 167, 69, 0.4);
         }
 
         .result-section {
-            margin-top: 30px; /* More space */
+            margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px dashed #ced4da; /* Lighter dashed border */
+            border-top: 1px dashed #ced4da;
             text-align: center;
             line-height: 1.5;
-            background-color: #e9ecef; /* Light gray background for results */
+            background-color: #e9ecef;
             border-radius: 10px;
             padding: 15px 20px;
-            box-shadow: inset 0 1px 5px rgba(0,0,0,0.05); /* Inner shadow for depth */
+            box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
         }
 
         .result-section h3 {
-            font-size: 1.2em; /* Larger heading */
+            font-size: 1.2em;
             color: var(--primary-color);
             margin-bottom: 15px;
             font-weight: 700;
         }
 
         .result-section p {
-            font-size: 0.95em; /* Slightly larger result text */
+            font-size: 0.95em;
             margin-bottom: 5px;
             color: var(--text-color);
             display: flex;
@@ -335,18 +344,18 @@
             padding: 0 8px;
         }
         .result-section p.total-result {
-            font-size: 1.1em; /* Larger total result */
+            font-size: 1.1em;
             font-weight: 700;
             color: var(--text-color);
             margin-top: 15px;
             padding-top: 10px;
-            border-top: 1px solid #cce5ff; /* Border matching price group */
-            color: var(--primary-color); /* Highlight total price */
+            border-top: 1px solid #cce5ff;
+            color: var(--primary-color);
         }
 
         .result-section strong {
-            color: var(--primary-color); /* Primary color for numbers */
-            font-size: 1.1em; /* Slightly larger numbers */
+            color: var(--primary-color);
+            font-size: 1.1em;
             font-weight: 700;
             margin-right: 3px;
         }
@@ -357,8 +366,8 @@
             margin-left: 3px;
         }
 
-        /* Mobile specific adjustments (already handled well by flexbox, but fine-tuning) */
-        @media (max-width: 400px) { /* General mobile phones */
+        /* Mobile specific adjustments */
+        @media (max-width: 400px) { 
             .calculator-container {
                 padding: 15px;
             }
@@ -371,10 +380,13 @@
             .item-row {
                 flex-direction: column; /* Stack inputs vertically on very small screens */
                 padding: 10px;
+                gap: 0; /* Remove gap when stacking vertically */
             }
             .item-row .input-wrapper,
             .item-row .wage-input-wrapper {
                 max-width: 100%; /* Take full width when stacked */
+                flex-basis: auto; /* Reset flex-basis for stacking */
+                min-width: unset; /* Allow inputs to go smaller if needed */
                 margin: 0 0 12px 0; /* Add bottom margin for spacing */
             }
             .item-row .input-wrapper:last-child,
@@ -382,7 +394,7 @@
                 margin-bottom: 0;
             }
              .item-row .wage-input-and-type input {
-                padding-right: 10px; /* Adjust padding for better look when stacked */
+                padding-right: 10px;
             }
         }
     </style>
@@ -400,28 +412,27 @@
             <input type="checkbox" id="enableTax" checked>
         </div>
 
-        <div class="input-group gold-price-input-group">
-            <label for="goldPrice">مبلغ قیمت هر گرم طلا:</label>
-            <input type="text" id="goldPrice" inputmode="numeric" oninput="formatGoldPrice(this.value)" placeholder="مثال: ۳۴۵۰۰۰۰">
+        <div class="input-group info-box"> <label for="goldPrice">مبلغ قیمت هر گرم طلا:</label>
+            <input type="text" id="goldPrice" inputmode="numeric" oninput="formatGoldPrice(this.value)">
             <div id="goldPriceInWords" class="gold-price-in-words">صفر تومان</div>
         </div>
+
+        <div class="input-group info-box"> <label for="sellerProfit">سود فروشنده:</label>
+            <select id="sellerProfit" onchange="updateSellerProfitDisplay()">
+                <option value="1">یک درصد</option>
+                <option value="2">دو درصد</option>
+                <option value="3">سه درصد</option>
+                <option value="4">چهار درصد</option>
+                <option value="5">پنج درصد</option>
+                <option value="6">شش درصد</option>
+                <option selected value="7">هفت درصد</option>
+            </select>
+            <div id="sellerProfitDisplay" class="gold-price-in-words">هفت درصد</div> </div>
+
 
         <div id="items-container">
             <button type="button" id="add-item-global-button" onclick="addItemRow()">+</button>
             </div>
-
-        <div class="input-group">
-            <label for="sellerProfit">سود فروشنده (درصد):</label>
-            <select id="sellerProfit">
-                <option value="1">1%</option>
-                <option value="2">2%</option>
-                <option value="3">3%</option>
-                <option value="4">4%</option>
-                <option value="5">5%</option>
-                <option value="6">6%</option>
-                <option selected value="7">7%</option>
-            </select>
-        </div>
 
         <button type="button" class="calculate-button" onclick="calculateGoldPrice()">محاسبه قیمت نهایی</button>
 
@@ -437,6 +448,9 @@
         let itemCounter = 0;
         const goldPriceInput = document.getElementById('goldPrice');
         const goldPriceInWordsDisplay = document.getElementById('goldPriceInWords');
+        const sellerProfitSelect = document.getElementById('sellerProfit');
+        const sellerProfitDisplay = document.getElementById('sellerProfitDisplay');
+
 
         const latinToPersianDigits = {
             '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴',
@@ -508,12 +522,28 @@
             return result.join(" و ").trim();
         }
 
+        function convertPercentageToPersianWord(percentValue) {
+            switch (percentValue) {
+                case '1': return 'یک درصد';
+                case '2': return 'دو درصد';
+                case '3': return 'سه درصد';
+                case '4': return 'چهار درصد';
+                case '5': return 'پنج درصد';
+                case '6': return 'شش درصد';
+                case '7': return 'هفت درصد';
+                default: return '';
+            }
+        }
+
+        function updateSellerProfitDisplay() {
+            const selectedValue = sellerProfitSelect.value;
+            sellerProfitDisplay.textContent = convertPercentageToPersianWord(selectedValue);
+        }
+
         function addItemRow() {
             itemCounter++;
             const itemsContainer = document.getElementById('items-container');
-            // No need to remove empty state message as it's not explicitly added anymore in DOM.
-            // The :empty pseudo-class in CSS handles it.
-
+            
             const itemRowDiv = document.createElement('div');
             itemRowDiv.classList.add('item-row');
             itemRowDiv.id = `item-row-${itemCounter}`;
@@ -521,23 +551,21 @@
             itemRowDiv.innerHTML = `
                 <div class="input-wrapper">
                     <label for="goldWeight-${itemCounter}">وزن (${itemCounter}):</label>
-                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0" placeholder="مثال: ۳.۵">
+                    <input type="number" id="goldWeight-${itemCounter}" class="gold-weight-input" step="0.01" min="0">
                 </div>
                 <div class="input-wrapper wage-input-wrapper">
                     <label for="wage-${itemCounter}">اجرت (${itemCounter}):</label>
                     <div class="wage-input-and-type">
-                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0" placeholder="مثال: ۷۰۰۰">
+                        <input type="number" id="wage-${itemCounter}" class="wage-input" min="0">
                         <select id="wageType-${itemCounter}" class="wage-type-select">
                             <option value="percent">%</option>
-                            <option value="amount">تومان</option>
-                        </select>
+                            <option value="amount">ت</option> </select>
                     </div>
                 </div>
             `;
             itemsContainer.appendChild(itemRowDiv);
 
             updateItemRowLabels();
-            // Scroll to the new item
             itemRowDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
@@ -577,9 +605,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Automatically add the first item row when the page loads
             addItemRow(); 
             updateGoldPriceInWords();
+            updateSellerProfitDisplay(); // Update on load for initial value
         });
 
 
